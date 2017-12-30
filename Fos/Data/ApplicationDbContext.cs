@@ -10,6 +10,14 @@ namespace Fos.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<DinnerTable> DinnerTables { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Kitchen> Kitchens { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -18,9 +26,9 @@ namespace Fos.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<DinnerTableClient>().HasKey(d => new { d.ClientId, d.DinnerTableId });
+            builder.Entity<DishOrder>().HasKey(d => new { d.DishId, d.OrderId });
+            builder.Entity<KitchenOrder>().HasKey(k => new { k.KitchenId, k.OrderId });
         }
     }
 }
