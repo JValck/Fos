@@ -87,7 +87,7 @@ namespace Fos.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClientId = table.Column<int>(nullable: false),
-                    InsertedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "NOW()")
+                    InsertedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
@@ -153,7 +153,7 @@ namespace Fos.Data.Migrations
                     KitchenId = table.Column<int>(nullable: false),
                     OrderId = table.Column<int>(nullable: false),
                     StatusId = table.Column<int>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "NOW()")
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
