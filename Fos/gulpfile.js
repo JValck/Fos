@@ -33,6 +33,11 @@ gulp.task('sass', function () {
     gulp.src(paths.cssAssets + "app.scss")
         .pipe(sass())
         .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest(paths.webroot + "css"));
+
+    gulp.src(paths.cssAssets + "app.scss")
+        .pipe(sass())
         .pipe(gulp.dest(paths.webroot + "css"));
 });
 

@@ -8,15 +8,16 @@ namespace Fos.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "De {0} is verplicht")]
+        [Display(Name = "Gebruikersnaam")]
+        public string UserName { get; set; }
+        
+        [Required(ErrorMessage = "Het {0} is verplicht")]
         [DataType(DataType.Password)]
+        [Display(Name = "Wachtwoord")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Aangemeld blijven?")]
         public bool RememberMe { get; set; }
     }
 }
