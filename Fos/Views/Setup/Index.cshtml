@@ -1,0 +1,43 @@
+﻿@model Fos.Models.SetupViewModels.SetupViewModel
+
+
+@{
+    ViewData["Title"] = Localizer["Installatie wizard"];
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            @ViewData["Title"]
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Localizer["Gelieve een wachtwoord in te stellen voor de administrator"]</h5>
+            <form asp-controller="Setup" asp-action="Index">
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input class="form-control" asp-for="UserName" readonly />
+                    <small class="form-text text-muted">@Localizer["Dit is de gebruikersnaam om mee aan te melden"].</small>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input class="form-control" asp-for="Password" />
+                    <small class="form-text text-muted">@Localizer["Dit wachtwoord heeft u nodig om o.a. accounts aan te maken"].</small>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input class="form-control" asp-for="ConfirmPassword" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Opslaan"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
