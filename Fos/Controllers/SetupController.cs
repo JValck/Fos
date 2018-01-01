@@ -25,7 +25,7 @@ namespace Fos.Controllers
         public IActionResult Index()
         {
             Task.Run(CreateRolesIfNotExistAsync).GetAwaiter().GetResult();
-            if (Task.Run(() => userManager.FindByNameAsync("Admin")).Result == null)
+            if (Task.Run(() => userManager.FindByNameAsync(UserName.Admin)).Result == null)
             {
                 return View(new SetupViewModel());
             }

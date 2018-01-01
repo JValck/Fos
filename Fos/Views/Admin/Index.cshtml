@@ -3,8 +3,49 @@
     ViewData["Title"] = Localizer["Administrator dashboard"];
 }
 
-<div class="container-fluid">
-    <h2>@ViewData["Title"]</h2>
-
+<div class="container">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+    <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top" src="~/images/users.png" alt="@Localizer["Gebruikersbeheer"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Gebruikers beheren"]</h5>
+                <p class="card-text">@Localizer["Via deze optie kan u gebruikers beheren en rollen toekennen"].</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="User" asp-action="Manage" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/images/kitchen.png" alt="@Localizer["Gebruikersbeheer"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Keukens beheren"]</h5>
+                <p class="card-text">@Localizer["Via deze optie kan u keukens beheren"].</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="Kitchen" asp-action="Manage" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/images/dishes.png" alt="@Localizer["Menubeheer"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Menu's beheren"]</h5>
+                <p class="card-text">@Localizer["Via deze optie kan u gerechten en dranken beheren en samenstellen"].</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="Dish" asp-action="Manage" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/images/table.png" alt="@Localizer["Tafelbeheer"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Tafels beheren"]</h5>
+                <p class="card-text">@Localizer["Via deze optie kan u tafels aanmaken"].</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="Table" asp-action="Manage" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+    </div>
 </div>
 

@@ -10,7 +10,7 @@ namespace Fos.Models.SetupViewModels
     {
         public SetupViewModel()
         {
-            UserName = "Admin";
+            UserName = Models.UserName.Admin;
         }
 
         [Required]

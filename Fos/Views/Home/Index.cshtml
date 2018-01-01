@@ -1,9 +1,17 @@
-﻿@{
+﻿@inject UserManager<ApplicationUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="h-75">
     <div class="row h-100 w-100 justify-content-center align-items-center">
-        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary"><i class="fas fa-sign-in-alt"></i> @Localizer["Aanmelden"]</a>
+        @if(await UserManager.FindByNameAsync(UserName.Admin) == null)
+        {
+            <a asp-controller="Setup" asp-action="Index" class="btn btn-outline-success"><i class="fas fa-plug"></i> @Localizer["Configureren"]</a>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary"><i class="fas fa-sign-in-alt"></i> @Localizer["Aanmelden"]</a>
+        }
     </div>
 </div>
