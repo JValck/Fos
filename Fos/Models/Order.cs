@@ -19,6 +19,9 @@ namespace Fos.Models
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
+        public Guid DinnerTableId { get; set; }
+        public DinnerTable DinnerTable { get; set; }
+
         public ICollection<DishOrder> DishOrders { get; set; }
         public ICollection<KitchenOrder> KitchenOrders { get; set; }
     }

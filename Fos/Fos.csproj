@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Fos-4FCB315E-FF87-403D-84B7-D0F0441BDB6C</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180101112541_AddDinnerTableBooleans.cs" />
+    <Compile Remove="Data\Migrations\20180101112541_AddDinnerTableBooleans.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />

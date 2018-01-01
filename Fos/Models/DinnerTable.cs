@@ -15,5 +15,6 @@ namespace Fos.Models
         public int TableNumber { get; set; }
 
         public ICollection<DinnerTableClient> DinnerTableUsers { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }
