@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Fos.Repositories.Contracts;
+using Fos.Repositories;
 
 namespace Fos
 {
@@ -43,6 +45,7 @@ namespace Fos
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IDinnerTableRepository, DinnerTableRepository>();
 
             services.AddLocalization(options => options.ResourcesPath = "Translations");
 

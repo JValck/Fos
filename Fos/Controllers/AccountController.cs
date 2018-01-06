@@ -65,7 +65,14 @@ namespace Fos.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    if (returnUrl != null)
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
+                    else
+                    {                        
+                        return await GetRedirectAfterLoginForUserAsync(model.UserName);
+                    }
                 }
                 if (result.IsLockedOut)
                 {
@@ -81,6 +88,16 @@ namespace Fos.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private async Task<IActionResult> GetRedirectAfterLoginForUserAsync(string userName)
+        {
+            var user = await  _userManager.FindByNameAsync(userName);
+            if(await _userManager.IsInRoleAsync(user , RoleName.Admin))
+            {
+                return RedirectToAction(nameof(AdminController.Index), "Admin");
+            }
+            return RedirectToLocal(null);//go to homepage
         }
 
         [HttpGet]
