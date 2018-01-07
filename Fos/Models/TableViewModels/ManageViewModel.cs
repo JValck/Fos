@@ -13,10 +13,10 @@ namespace Fos.Models.TableViewModels
         public ICollection<DinnerTable> Tables { get; set; }
 
         [Display(Name = "Van")]
-        [Range(0, int.MaxValue, ErrorMessage = "Gelieve een waarde op te geven die groter is dan 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "Gelieve een waarde op te geven die groter is dan 0")]
         public int CreateFrom { get; set; }
         [Display(Name = "Tot")]
-        [Range(0, int.MaxValue, ErrorMessage = "Gelieve een waarde op te geven die groter is dan 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "Gelieve een waarde op te geven die groter is dan 0")]
         [GreaterThan("CreateFrom", ErrorMessage = "Moet groter zijn dan de beginwaarde [Van > Tot].")]
         public int CreateUntil { get; set; }
     }

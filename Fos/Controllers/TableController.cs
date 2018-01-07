@@ -41,10 +41,18 @@ namespace Fos.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                dinnerTableRepository.CreateInterval(model.CreateFrom, model.CreateUntil);
+                return RedirectToAction(nameof(TableController.Manage), "table");
             }
             model.Tables = dinnerTableRepository.GetAll();
             return View("Manage", model);
+        }
+
+        [Authorize(Roles = RoleName.Admin)]
+        public IActionResult Delete(string id)
+        {
+            dinnerTableRepository.Delete(Guid.Parse(id));
+            return RedirectToAction(nameof(TableController.Manage), "table");
         }
 
     }

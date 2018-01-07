@@ -46,6 +46,7 @@ namespace Fos
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDinnerTableRepository, DinnerTableRepository>();
+            services.AddTransient<IKitchenRepository, KitchenRepository>();
 
             services.AddLocalization(options => options.ResourcesPath = "Translations");
 

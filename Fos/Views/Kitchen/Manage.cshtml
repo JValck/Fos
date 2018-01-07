@@ -1,0 +1,55 @@
+﻿@model Fos.Models.KitchenViewModels.ManageViewModel
+@{
+    ViewData["Title"] = Localizer["Keukens beheren"];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <div class="card">
+        <div class="card-header">
+            @Localizer["Keuken aanmaken"]
+        </div>
+        <div class="card-body">
+            <div class="card-text">@Localizer["Gelieve hieronder de naam van de keuken in te geven. (Bv. bar, grote keuken, desserten,...)"]</div>
+            <form class="form-inline" asp-action="Create">
+                <div class="form-group mb-2">
+                    <label asp-for="Name" class="mr-2"></label>
+                    <input asp-for="Name" class="form-control @(ViewData.ModelState.ContainsKey("Name") ? "is-invalid":"is-valid")">
+                    <div asp-validation-for="CreateUntil" class="invalid-feedback">@Html.ValidationMessageFor(m => m.Name)</div>
+                </div>               
+                <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> @Localizer["Toevoegen"]</button>
+            </form>
+        </div>
+    </div>
+<hr />
+
+@if(Model.Kitchens.Count > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Localizer["Naam"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var kitchen in Model.Kitchens.OrderBy(k => k.Name))
+            {
+                <tr>
+                    <td>@kitchen.Name</td>
+                    <td>
+                        <a href="Update/@kitchen.Id"><i class="fas fa-edit"></i></a>
+                        <a href="Delete/@kitchen.Id"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p class="text-center">--@Localizer["Er zijn momenteel geen keukens"]--</p>
+
+}
+</div>

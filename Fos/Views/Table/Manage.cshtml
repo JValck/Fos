@@ -29,21 +29,19 @@
     <hr />
     @if (Model.Tables.Count > 0)
     {
-    <table>
-        <thead>
+    <table class="table">
+        <thead class="thead-dark">
             <tr>
-                <td>@Localizer["Tafelnummer"]</td>
-                <td></td>
+                <th>@Localizer["Tafelnummer"]</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var table in Model.Tables)
+            @foreach (var table in Model.Tables.OrderBy(t =>t.TableNumber))
             {
                 <tr>
                     <td>@table.TableNumber</td>
-                </tr>
-                <tr>
-                    <td></td>
+                    <td><a href="Delete/@table.Id.ToString()"><i class="fas fa-trash"></i></a></td>
                 </tr>
             }
         </tbody>
