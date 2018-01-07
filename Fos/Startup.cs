@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Fos.Repositories.Contracts;
 using Fos.Repositories;
+using Fos.Storage;
 
 namespace Fos
 {
@@ -34,6 +35,7 @@ namespace Fos
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<Options.Storage>(Configuration.GetSection("Storage"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
@@ -47,6 +49,9 @@ namespace Fos
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDinnerTableRepository, DinnerTableRepository>();
             services.AddTransient<IKitchenRepository, KitchenRepository>();
+            services.AddTransient<IDishesRepository, DishesRepository>();
+
+            services.AddTransient<IStorage, DiskStorage>();
 
             services.AddLocalization(options => options.ResourcesPath = "Translations");
 
