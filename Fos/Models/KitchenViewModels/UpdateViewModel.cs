@@ -8,9 +8,6 @@ namespace Fos.Models.KitchenViewModels
 {
     public class UpdateViewModel
     {
-        [Required]
-        public int Id { get; set; }
-
         [Display(Name = "Naam")]
         [Required(ErrorMessage = "{0} is verplicht.")]
         [StringLength(255, MinimumLength = 1, ErrorMessage = "{0} moet tussen de {2} en {1} karakters lang zijn.")]

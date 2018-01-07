@@ -45,7 +45,7 @@ namespace Fos.Controllers
                 {
                     Name = model.Name
                 });
-                return RedirectToAction(nameof(KitchenController.Manage), "kitchen");
+                return RedirectToAction(nameof(KitchenController.Manage), "Kitchen");
             }
             model.Kitchens = kitchenRepository.GetAll();
             return View("Manage", model);
@@ -55,15 +55,31 @@ namespace Fos.Controllers
         public IActionResult Delete(int id)
         {
             kitchenRepository.Delete(id);
-            return RedirectToAction(nameof(KitchenController.Manage), "kitchen");
+            return RedirectToAction(nameof(KitchenController.Manage), "Kitchen");
+        }
+
+        [Authorize(Roles = RoleName.Admin)]
+        public IActionResult Update(int id)
+        {
+            var kitchen = kitchenRepository.Get(id);
+            if (kitchen == null) return NotFound();
+            var model = new UpdateViewModel
+            {
+                Name = kitchen.Name
+            };
+            return View(model);
         }
 
         [Authorize(Roles = RoleName.Admin)]
         [HttpPost]
         public IActionResult Update(int id, UpdateViewModel model)
         {
-            kitchenRepository.UpdateKitchenName(id, model.Name);
-            return RedirectToAction(nameof(KitchenController.Manage), "kitchen");
+            if (ModelState.IsValid)
+            {
+                kitchenRepository.UpdateKitchenName(id, model.Name);
+                return RedirectToAction(nameof(KitchenController.Manage), "Kitchen");
+            }
+            return View(model);
         }
     }
 }
