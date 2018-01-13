@@ -1,0 +1,51 @@
+﻿@model Fos.Models.DishViewModels.UpdateViewModel
+
+@{
+    ViewData["Title"] = "Gerecht wijzigen";
+}
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Update"  enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="KitchenId" class="mr-2">@Localizer["Wordt klaargemaakt in"]</label>
+                    <select asp-for="KitchenId" asp-items="@(new SelectList(Model.Kitchens, "Id", "Name", Model.KitchenId))" class="custom-select"></select>
+                    <span asp-validation-for="KitchenId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Image"></label>
+                    <div class="custom-file">
+                        <input aria-describedby="imageHelpBlock" type="file" name="Image" accept=".jpeg, .jpg, .jpe, .png" class="custom-file-input  @(ViewData.ModelState.ContainsKey("Image") ? "is-invalid":"")">
+                        <label class="custom-file-label" asp-for="Image">@Localizer["Kies een bestand"]</label>
+                    </div>
+                    <small id="imageHelpBlock" class="form-text text-muted">
+                        @Localizer["Optioneel"].
+                    </small>
+                    <div asp-validation-for="Image" class="invalid-feedback">@Html.ValidationMessageFor(m => m.Image)</div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> @ViewData["Title"]</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            @if(Model.ImageUrl != null)
+            {
+                <img src="~/@Model.ImageUrl" class="img-fluid img-thumbnail border" />
+            }
+        </div>
+    </div>
+</div>

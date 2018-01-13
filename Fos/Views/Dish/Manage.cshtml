@@ -28,7 +28,7 @@
                         <div class="form-group mb-2">
                             <label asp-for="Image"></label>
                             <div class="custom-file">
-                                <input aria-describedby="imageHelpBlock" type="file" name="Image" accept=".jpeg, .png" class="custom-file-input  @(ViewData.ModelState.ContainsKey("Image") ? "is-invalid":"")">
+                                <input aria-describedby="imageHelpBlock" type="file" name="Image" accept=".jpeg, .jpg, .jpe, .png" class="custom-file-input  @(ViewData.ModelState.ContainsKey("Image") ? "is-invalid":"")">
                                 <label class="custom-file-label" asp-for="Image">@Localizer["Kies een bestand"]</label>
                             </div>
                             <small id="imageHelpBlock" class="form-text text-muted">

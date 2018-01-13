@@ -10,6 +10,7 @@ using Fos.Repositories.Contracts;
 using Fos.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -53,44 +54,90 @@ namespace Fos.Controllers
         {            
             if (ModelState.IsValid)
             {
-                string imagePath = null;
-                if(viewModel.Image != null)
+                string imagePath = await SaveImage(viewModel.Image);
+                dishesRepository.Add(new Dish
                 {
-                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-                    var extension = Path.GetExtension(viewModel.Image.FileName).ToLower();
-                    if (allowedExtensions.Contains(extension))
-                    {
-                        var fileName = Guid.NewGuid().ToString() + extension;
-                        imagePath = Path.Combine(storageOptions.Value.ImageUploadPath, fileName);
-                        var fullPath = Path.Combine(_hostingEnvironment.WebRootPath, imagePath);
-                        await storage.SaveAsync(viewModel.Image, fullPath);
-
-                        dishesRepository.Add(new Dish
-                        {
-                            Description = viewModel.Description,
-                            Price = viewModel.Price,
-                            ImageUrl = imagePath,
-                            KitchenId = viewModel.KitchenId
-                        });
-                        return RedirectToAction(nameof(DishController.Manage), "Dish");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Image", _localizer["Ongeldig bestandstype"]);
-                    }
-                }
+                    Description = viewModel.Description,
+                    Price = Convert.ToDouble(viewModel.Price),
+                    ImageUrl = imagePath,
+                    KitchenId = viewModel.KitchenId
+                });
+                return RedirectToAction(nameof(DishController.Manage), "Dish");
             }
             viewModel.Dishes = dishesRepository.GetAll();
             viewModel.Kitchens = kitchenRepository.GetAll();
             return View("Manage", viewModel);
         }
 
+        private async Task<string> SaveImage(IFormFile Image, string imagePath = null)
+        {
+            if (Image != null)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                var extension = Path.GetExtension(Image.FileName).ToLower();
+                if (allowedExtensions.Contains(extension))
+                {
+                    var fileName = Guid.NewGuid().ToString() + extension;
+                    imagePath = Path.Combine(storageOptions.Value.ImageUploadPath, fileName);
+                    var fullPath = Path.Combine(_hostingEnvironment.WebRootPath, imagePath);
+                    await storage.SaveAsync(Image, fullPath);
+
+                }
+                else
+                {
+                    ModelState.AddModelError("Image", _localizer["Ongeldig bestandstype"]);
+                }
+            }
+            return imagePath;
+        }
+
         [Authorize(Roles = RoleName.Admin)]
         public IActionResult Delete(int id)
         {
-            //TODO: delete image
+            DeleteImage(id);
             dishesRepository.Delete(id);
             return RedirectToAction(nameof(DishController.Manage), "Dish");
+        }
+
+        private void DeleteImage(int id)
+        {
+            var dish = dishesRepository.Get(id);
+            if (dish != null && dish.ImageUrl != null)
+            {
+                storage.Delete(Path.Combine(_hostingEnvironment.WebRootPath, dish.ImageUrl));
+            }
+        }
+
+        [Authorize(Roles = RoleName.Admin)]
+        public IActionResult Update(int id)
+        {
+            var dish = dishesRepository.Get(id);
+            if (dish == null) return NotFound();
+            var model = new UpdateViewModel
+            {
+                Description = dish.Description,
+                ImageUrl = dish.ImageUrl,
+                KitchenId = dish.KitchenId,
+                Price = dish.Price,
+                Kitchens = kitchenRepository.GetAll(),
+            };
+            return View(model);
+        }
+
+        [Authorize(Roles = RoleName.Admin)]
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, UpdateViewModel model)
+        {
+            var dish = dishesRepository.Get(id);
+            if (ModelState.IsValid && dish != null)
+            {
+                DeleteImage(id);
+                string imagePath = await SaveImage(model.Image);
+                dishesRepository.Update(id, model.Description, Convert.ToDouble(model.Price), model.KitchenId, imagePath);
+                return RedirectToAction(nameof(DishController.Manage), "Dish");
+            }
+            model.Kitchens = kitchenRepository.GetAll();
+            return View(model);
         }
     }
 }

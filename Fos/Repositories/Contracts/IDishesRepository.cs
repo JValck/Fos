@@ -11,7 +11,7 @@ namespace Fos.Repositories.Contracts
         IList<Dish> GetAll();
         void Delete(int id);
         void Add(Dish dish);
-        void Update(int id, string description, double price);
+        void Update(int id, string description, double price, int kitchenId, string imageUrl = null);
         /// <summary>
         /// Gets the dish or null if none found
         /// </summary>

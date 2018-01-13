@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Fos.Models.DishViewModels
 {
-    public class ManageViewModel
+    public class UpdateViewModel
     {
-        public IList<Dish> Dishes { get; set; }
         public IList<Kitchen> Kitchens { get; set; }
+        public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "{0} is verplicht")]
         [Display(Name = "Omschrijving")]
@@ -18,9 +18,9 @@ namespace Fos.Models.DishViewModels
 
         [Required(ErrorMessage = "{0} is verplicht")]
         [Range(0, double.MaxValue, ErrorMessage = "{0} moet minimaal 0 zijn")]
-        [DataType(DataType.Currency)]
         [Display(Name = "Prijs")]
-        public double Price{ get; set; }
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
 
         [Display(Name = "Afbeelding")]
         public IFormFile Image { get; set; }

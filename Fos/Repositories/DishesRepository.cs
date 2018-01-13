@@ -46,13 +46,15 @@ namespace Fos.Repositories
                 .ToList();
         }
 
-        public void Update(int id, string description, double price)
+        public void Update(int id, string description, double price, int kitchenId, string imageUrl = null)
         {
             var obj = Get(id);
             if(obj != null)
             {
                 obj.Description = description;
                 obj.Price = price;
+                obj.ImageUrl = imageUrl;
+                obj.KitchenId = kitchenId;
                 dbContext.Update(obj);
                 dbContext.SaveChanges();
             }
