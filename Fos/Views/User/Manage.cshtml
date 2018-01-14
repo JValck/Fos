@@ -1,0 +1,39 @@
+﻿@model Fos.Models.UserViewModels.ManageViewModel
+@inject UserManager<ApplicationUser> Manager;
+
+@{
+    ViewData["Title"] = Localizer["Gebruikers beheren"];
+}
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <div class="d-flex justify-content-end">
+        <div class="btn-group" role="group">
+            <a class="btn btn-primary text-light" asp-action="AddCashier"><i class="fas fa-user-plus"></i> @Localizer["Kassier toevoegen"]</a>
+            <a class="btn btn-primary text-light" asp-action="AddWaiter"><i class="fas fa-user-plus"></i> @Localizer["Ober toevoegen"]</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Localizer["Gebruiker"]</th>
+                <th>@Localizer["Rol"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var user in Model.Users.OrderBy(u => u.UserName))
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@String.Join(",", @Manager.GetRolesAsync(user).Result.ToArray())</td>
+                    <td>
+                        @if(user.UserName != "Admin")
+                        {
+                            <a href="Delete/@user.Id"><i class="fas fa-trash"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

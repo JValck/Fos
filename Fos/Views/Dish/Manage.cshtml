@@ -54,7 +54,6 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th></th>
                     <th>@Localizer["Omschrijving"]</th>
                     <th>@Localizer["Prijs"]</th>
                     <th>@Localizer["Wordt klaargemaakt in"]</th>
@@ -65,7 +64,6 @@
                 @foreach(var dish in Model.Dishes)
                 {
                     <tr>
-                        <td><img src="~/@dish.ImageUrl" class="img-thumbnail img-fluid"/></td>
                         <td>@dish.Description</td>
                         <td>@dish.Price</td>
                         <td>@dish.Kitchen.Name</td>
