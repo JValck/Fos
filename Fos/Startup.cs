@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Fos.Repositories.Contracts;
 using Fos.Repositories;
 using Fos.Storage;
+using Fos.Helpers;
 
 namespace Fos
 {
@@ -50,8 +51,10 @@ namespace Fos
             services.AddTransient<IDinnerTableRepository, DinnerTableRepository>();
             services.AddTransient<IKitchenRepository, KitchenRepository>();
             services.AddTransient<IDishesRepository, DishesRepository>();
+            services.AddTransient<IClientRepository, ClientRepository>();
 
             services.AddTransient<IStorage, DiskStorage>();
+            services.AddTransient<IUserHelper, UserHelper>();
 
             services.AddLocalization(options => options.ResourcesPath = "Translations");
 

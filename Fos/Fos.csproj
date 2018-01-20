@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Translations\Views\Home\" />
     <Folder Include="Translations\Views\Shared\" />
   </ItemGroup>
