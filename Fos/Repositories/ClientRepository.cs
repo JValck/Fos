@@ -1,4 +1,7 @@
-﻿using Fos.Repositories.Contracts;
+﻿using Fos.Data;
+using Fos.Models;
+using Fos.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,5 +11,37 @@ namespace Fos.Repositories
 {
     public class ClientRepository : IClientRepository
     {
+        private readonly ApplicationDbContext dbContext;
+
+        public ClientRepository(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        public Client Create(string name, DinnerTable table, ApplicationUser applicationUser)
+        {
+            var client = new Client
+            {
+                Name = name,                
+                ApplicationUser = applicationUser,
+                DinnerTableClients = new List<DinnerTableClient>(),
+            };
+            client.DinnerTableClients.Add(new DinnerTableClient { DinnerTable = table});
+            dbContext.Clients.Add(client);
+            dbContext.SaveChanges();
+            return client;
+        }
+
+        public IList<Client> GetAll()
+        {
+            return dbContext.Clients
+                .Include(c => c.DinnerTableClients).ThenInclude(dtc => dtc.DinnerTable)
+                .ToList();
+        }
+
+        public Client Search(string nameContains)
+        {
+            return dbContext.Clients.Where(c => c.Name.Contains(nameContains)).FirstOrDefault();
+        }
     }
 }

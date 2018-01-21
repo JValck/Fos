@@ -28,7 +28,6 @@ namespace Fos.Data
             base.OnModelCreating(builder);
             builder.Entity<DinnerTableClient>().HasKey(d => new { d.ClientId, d.DinnerTableId });
             builder.Entity<DishOrder>().HasKey(d => new { d.DishId, d.OrderId });
-            builder.Entity<KitchenOrder>().HasKey(k => new { k.KitchenId, k.OrderId });
         }
     }
 }

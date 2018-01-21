@@ -88,6 +88,9 @@ namespace Fos.Controllers
             if(await _userManager.IsInRoleAsync(user , RoleName.Admin))
             {
                 return RedirectToAction(nameof(AdminController.Index), "Admin");
+            }else if(await _userManager.IsInRoleAsync(user, RoleName.Waiter))
+            {
+                return RedirectToAction(nameof(ClientController.Index), "Client");
             }
             return RedirectToLocal(null);//go to homepage
         }

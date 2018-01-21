@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,5 +13,11 @@ namespace Fos.Models
 
         public Order Order { get; set; }
         public Dish Dish { get; set; }
+
+        public int StatusId { get; set; }
+        public Status Status { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime UpdatedAt { get; set; }
     }
 }

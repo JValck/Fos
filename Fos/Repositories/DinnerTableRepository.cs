@@ -44,6 +44,16 @@ namespace Fos.Repositories
             return dbContext.DinnerTables.Where(t => t.TableNumber == tableNumber).Count() > 0;
         }
 
+        public DinnerTable Get(Guid id)
+        {
+            return dbContext.DinnerTables.Find(id);
+        }
+
+        public DinnerTable Get(int tableNumber)
+        {
+            return dbContext.DinnerTables.Where(t => t.TableNumber == tableNumber).FirstOrDefault();
+        }
+
         public IList<DinnerTable> GetAll()
         {
             return dbContext.DinnerTables.ToList();

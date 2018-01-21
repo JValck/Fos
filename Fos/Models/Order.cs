@@ -23,6 +23,5 @@ namespace Fos.Models
         public DinnerTable DinnerTable { get; set; }
 
         public ICollection<DishOrder> DishOrders { get; set; }
-        public ICollection<KitchenOrder> KitchenOrders { get; set; }
     }
 }

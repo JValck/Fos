@@ -16,5 +16,6 @@ namespace Fos.Models
 
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+        public ICollection<DinnerTableClient> DinnerTableClients { get; set; }
     }
 }

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Fos.Models.Client>
+@using Fos.Models
+
+@{
+    ViewData["Title"] = Localizer["Klant zoeken"];
+}
+
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <p class="d-flex justify-content-end">
+        <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> @Localizer["Klant aanmaken"]</a>
+    </p>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Localizer["Naam"]
+                </th>
+                <th>
+                    @Localizer["Tafel(s)"]
+                </th>
+                <th colspan="4" class="text-center">
+                    @Localizer["Acties"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @String.Join(", ", item.DinnerTableClients.Select(dtc => dtc.DinnerTable.TableNumber).OrderBy(number => number).ToList())
+                    </td>
+                    <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#4CD4B0; cursor: pointer;">
+                        <a asp-controller="Order" asp-action="Create" asp-route-id="@item.Id" class="text-light">@Localizer["Nieuwe bestelling"]</a>
+                    </td>
+                    <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#EDD834; cursor: pointer;">
+                        <a asp-controller="Order" asp-action="AllFor" asp-route-id="@item.Id" class="text-light">@Localizer["Overzicht bestellingen"]</a>
+                    </td>
+                    @if (User.IsInRole(RoleName.Cashier))
+                    {
+                        <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#FFFCE6; cursor: pointer;">
+                            <a asp-controller="Client" asp-action="Pay" asp-route-id="@item.Id" class="text-dark">@Localizer["Afrekenen"]</a>
+                        </td>
+                        <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#7D1424; cursor: pointer;">
+                            <a asp-controller="Client" asp-action="Delete" asp-route-id="@item.Id" class="text-light">@Localizer["Verwijderen"]</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

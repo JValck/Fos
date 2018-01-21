@@ -1,6 +1,6 @@
 ﻿namespace Fos.Models
 {
-    class RoleName
+    public class RoleName
     {
         public const string Admin = "Admin";
         public const string Cashier = "Cashier";

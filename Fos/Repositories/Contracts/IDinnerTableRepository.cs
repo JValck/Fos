@@ -20,5 +20,7 @@ namespace Fos.Repositories.Contracts
         void CreateInterval(int from, int until);
         bool Exists(int tableNumber);
         void Delete(Guid guid);
+        DinnerTable Get(Guid id);
+        DinnerTable Get(int tableNumber);
     }
 }
