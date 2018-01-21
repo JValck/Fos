@@ -81,7 +81,7 @@ namespace Fos.Controllers
 
         public IActionResult AddCashier()
         {
-            ViewData["Title"] = _localizer["Ober toevoegen"];
+            ViewData["Title"] = _localizer["Kassier toevoegen"];
             return View("AddUser");
         }
 
