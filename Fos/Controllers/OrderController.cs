@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fos.Helpers;
+using Fos.Models.OrderViewModels;
 using Fos.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +13,14 @@ namespace Fos.Controllers
     {
         private readonly IClientRepository clientRepository;
         private readonly IDishesRepository dishesRepository;
+        private readonly IDinnerTableRepository dinnerTableRepository;
         private readonly IUserHelper userHelper;
 
-        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IUserHelper userHelper)
+        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IDinnerTableRepository dinnerTableRepository, IUserHelper userHelper)
         {
             this.clientRepository = clientRepository;
             this.dishesRepository = dishesRepository;
+            this.dinnerTableRepository = dinnerTableRepository;
             this.userHelper = userHelper;
         }
 
@@ -26,9 +29,18 @@ namespace Fos.Controllers
             return View();
         }
 
+        [Route("[controller]/[action]/{clientId}")]
         public IActionResult Create(int clientId)
         {
-            return View();
+            if (!clientRepository.Exists(clientId)) return NotFound();
+            var model = new CreateViewModel
+            {
+                ClientId = clientId,
+                KitchenDishes = dishesRepository.GetAllGroupedByKitchen(),//TODO: sort
+                Tables = dinnerTableRepository.GetAll(),
+                TableId = clientRepository.Get(clientId).DinnerTableClients.Select(dt => dt.DinnerTable.Id).Last(),
+            };
+            return View(model);
         }
     }
 }

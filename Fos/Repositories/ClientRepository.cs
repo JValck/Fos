@@ -32,6 +32,18 @@ namespace Fos.Repositories
             return client;
         }
 
+        public bool Exists(int clientId)
+        {
+            return (Get(clientId) != null);
+        }
+
+        public Client Get(int id)
+        {
+            return dbContext.Clients
+                .Include(c => c.DinnerTableClients).ThenInclude(dtc => dtc.DinnerTable)
+                .First(c => c.Id == id);
+        }
+
         public IList<Client> GetAll()
         {
             return dbContext.Clients

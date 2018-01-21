@@ -46,6 +46,12 @@ namespace Fos.Repositories
                 .ToList();
         }
 
+        public IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchen()
+        {
+            var all = GetAll();
+            return all.GroupBy(d => d.Kitchen).ToDictionary(g => g.Key, g => g.ToList());
+        }
+
         public void Update(int id, string description, double price, int kitchenId, string imageUrl = null)
         {
             var obj = Get(id);

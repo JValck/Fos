@@ -1,0 +1,20 @@
+﻿@model Fos.Models.OrderViewModels.CreateViewModel
+
+
+@{
+    ViewData["Title"] = Localizer["Bestelling aanmaken"];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    @foreach(var kitchen in Model.KitchenDishes.OrderBy(kd => kd.Key.Name))
+    {
+        <h3>@kitchen.Key.Name</h3>
+        @foreach(var dish in kitchen.Value.OrderBy(d => d.Description))
+        {
+            <p>@dish.Description</p>
+        }
+    }
+
+</div>
+

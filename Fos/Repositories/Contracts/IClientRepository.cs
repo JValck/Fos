@@ -18,5 +18,7 @@ namespace Fos.Repositories.Contracts
         Client Search(string nameContains);
 
         IList<Client> GetAll();
+        bool Exists(int clientId);
+        Client Get(int id);
     }
 }

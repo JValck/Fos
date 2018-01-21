@@ -18,5 +18,6 @@ namespace Fos.Repositories.Contracts
         /// <param name="id"></param>
         /// <returns></returns>
         Dish Get(int id);
+        IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchen();
     }
 }
