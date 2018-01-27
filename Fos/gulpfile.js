@@ -42,20 +42,23 @@ gulp.task('sass', function () {
 });
 
 gulp.task('js', function () {
-    browserify({ entries: paths.jsAssets + "app.js", debug: true })
+    convertJs('app.js');
+    convertJs('createOrder.js');
+});
+
+function convertJs(jsFileName) {
+    browserify({ entries: paths.jsAssets + jsFileName, debug: true })
         .transform("babelify", { presets: ["es2015"] })
         .bundle()
-        .pipe(source('app.js'))
+        .pipe(source(jsFileName))
         .pipe(buffer())
-        //.pipe(sourcemaps.init())
         .pipe(uglify())
-        //.pipe(sourcemaps.write('./maps'))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest(paths.webroot+"js"));
-
-    browserify({ entries: paths.jsAssets + "app.js", debug: true })
-        .transform("babelify", { presets: ["es2015"] })        
-        .bundle()
-        .pipe(source('app.js'))
+        .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(paths.webroot + "js"));
-});
+
+    browserify({ entries: paths.jsAssets + jsFileName, debug: true })
+        .transform("babelify", { presets: ["es2015"] })
+        .bundle()
+        .pipe(source(jsFileName))
+        .pipe(gulp.dest(paths.webroot + "js"));
+}

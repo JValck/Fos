@@ -33,12 +33,14 @@ namespace Fos.Controllers
         public IActionResult Create(int clientId)
         {
             if (!clientRepository.Exists(clientId)) return NotFound();
+            var x = dishesRepository.GetAll().ToDictionary(d => d.Id, d => d.Price);
             var model = new CreateViewModel
             {
                 ClientId = clientId,
-                KitchenDishes = dishesRepository.GetAllGroupedByKitchen(),//TODO: sort
+                KitchenDishes = dishesRepository.GetAllGroupedByKitchen(),
                 Tables = dinnerTableRepository.GetAll(),
                 TableId = clientRepository.Get(clientId).DinnerTableClients.Select(dt => dt.DinnerTable.Id).Last(),
+                DishOrders = dishesRepository.GetAll().ToDictionary(d => d.Id, d => 0),
             };
             return View(model);
         }

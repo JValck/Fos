@@ -21,6 +21,8 @@ namespace Fos.Models
         public int KitchenId { get; set; }
         public Kitchen Kitchen { get; set; }
 
+        public bool Exhausted { get; set; }
+
         public ICollection<DishOrder> DishOrders { get; set; }
     }
 }
