@@ -12,8 +12,8 @@
         <div class="row">
             @foreach (var dish in kitchen.Value.OrderBy(d => d.Description))
             {
-                <div class="col-6 col-sm-4 col-md-3 col-xl-2 mb-2">
-                    <input min="0" type="number" name="@dish.Id" value="@Model.DishOrders[dish.Id]" class="dish-order-input" />
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2 mb-2 dish-order-container">
+                    <input min="0" type="number" name="@dish.Id" value="@Model.DishOrders[dish.Id]" class="dish-order-input" id="input-@dish.Id" />
                     <div class="card dish-order-card">
                         @if (dish.ImageUrl != null)
                         {
@@ -24,11 +24,11 @@
                             <p class="card-text">€@dish.Price</p>
                         </div>
                         <div class="dish-order-amount-container">
-                            <div class="btn-group btn-group-lg d-flex" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary w-100"><i class="fas fa-minus"></i></button>
-                                <button type="button" class="btn btn-secondary w-100"><i class="fas fa-plus"></i></button>
+                            <div class="btn-group btn-group-lg d-flex" role="group" aria-label="">
+                                <button type="button" class="btn btn-outline-secondary w-100 reduce"><i class="fas fa-minus"></i></button>
+                                <button type="button" class="btn btn-primary w-100 add"><i class="fas fa-plus"></i></button>
                             </div>
-                            <span class="badge badge-primary">
+                            <span class="badge badge-info">
                                 <span class="badge badge-light">@Model.DishOrders[dish.Id]</span>
                                 <span class="sr-only">@Localizer["Aantal"] @dish.Description</span>
                             </span>
