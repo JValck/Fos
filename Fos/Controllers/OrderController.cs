@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fos.Helpers;
+using Fos.Models;
 using Fos.Models.OrderViewModels;
 using Fos.Repositories.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fos.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = RoleName.Cashier+", "+RoleName.Waiter)]
     public class OrderController : Controller
     {
         private readonly IClientRepository clientRepository;
@@ -43,6 +47,14 @@ namespace Fos.Controllers
                 DishOrders = dishesRepository.GetAll().ToDictionary(d => d.Id, d => 0),
             };
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("[controller]/[action]/{clientId}")]
+        public IActionResult Create(int clientId, CreateViewModel model)
+        {
+            var data = Request.Form;
+            return RedirectToAction(nameof(OrderController.Index), "Order");
         }
     }
 }

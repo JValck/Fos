@@ -6,38 +6,42 @@
 
 <div class="container">
     <h2>@ViewData["Title"]</h2>
-    @foreach (var kitchen in Model.KitchenDishes.OrderBy(kd => kd.Key.Name))
-    {
-        <h3>@kitchen.Key.Name</h3>
-        <div class="row">
-            @foreach (var dish in kitchen.Value.OrderBy(d => d.Description))
-            {
-                <div class="col-6 col-sm-4 col-md-3 col-xl-2 mb-2 dish-order-container">
-                    <input min="0" type="number" name="@dish.Id" value="@Model.DishOrders[dish.Id]" class="dish-order-input" id="input-@dish.Id" />
-                    <div class="card dish-order-card">
-                        @if (dish.ImageUrl != null)
-                        {
-                            <img class="card-img-top" style="max-height: 50rem" src="~/@dish.ImageUrl" alt="@dish.Description">
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@dish.Description</h5>
-                            <p class="card-text">€@dish.Price</p>
-                        </div>
-                        <div class="dish-order-amount-container">
-                            <div class="btn-group btn-group-lg d-flex" role="group" aria-label="">
-                                <button type="button" class="btn btn-outline-secondary w-100 reduce"><i class="fas fa-minus"></i></button>
-                                <button type="button" class="btn btn-primary w-100 add"><i class="fas fa-plus"></i></button>
+    <form method="post">
+        <button type="submit" class="btn btn-success">@ViewData["Title"]</button>
+        @foreach (var kitchen in Model.KitchenDishes.OrderBy(kd => kd.Key.Name))
+        {
+            <h3>@kitchen.Key.Name</h3>
+            <div class="row">
+                @foreach (var dish in kitchen.Value.OrderBy(d => d.Description))
+                {
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2 mb-2 dish-order-container">
+                        <input min="0" type="number" name="@dish.Id" value="@Model.DishOrders[dish.Id]" class="dish-order-input" id="input-@dish.Id" />
+                        <div class="card dish-order-card">
+                            @if (dish.ImageUrl != null)
+                            {
+                                <img class="card-img-top" style="max-height: 50rem" src="~/@dish.ImageUrl" alt="@dish.Description">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@dish.Description</h5>
+                                <p class="card-text">€@dish.Price</p>
                             </div>
-                            <span class="badge badge-info">
-                                <span class="badge badge-light">@Model.DishOrders[dish.Id]</span>
-                                <span class="sr-only">@Localizer["Aantal"] @dish.Description</span>
-                            </span>
+                            <div class="dish-order-amount-container">
+                                <div class="btn-group btn-group-lg d-flex" role="group" aria-label="">
+                                    <button type="button" class="btn btn-outline-secondary w-100 reduce"><i class="fas fa-minus"></i></button>
+                                    <button type="button" class="btn btn-primary w-100 add"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <span class="badge badge-info">
+                                    <span class="badge badge-light">@Model.DishOrders[dish.Id]</span>
+                                    <span class="sr-only">@Localizer["Aantal"] @dish.Description</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
+        <button type="submit" class="btn btn-success">@ViewData["Title"]</button>
+    </form>
 </div>
 
 @section Scripts{
