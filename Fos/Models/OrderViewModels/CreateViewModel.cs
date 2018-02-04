@@ -17,8 +17,7 @@ namespace Fos.Models.OrderViewModels
 
         [Required(ErrorMessage = "{0} is verplicht")]
         public int ClientId { get; internal set; }
-
-        [Required(ErrorMessage = "Er zijn geen bestellingen gevonden")]
+        
         public Dictionary<int, int> DishOrders { get; set; }
     }
 }

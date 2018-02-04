@@ -7,10 +7,17 @@
 <div class="container">
     <h2>@ViewData["Title"]</h2>
     <form method="post">
-        <button type="submit" class="btn btn-success">@ViewData["Title"]</button>
+        <button type="submit" class="btn btn-success btn-block m-md-2"><i class="fas fa-paper-plane"></i> @ViewData["Title"]</button>
+
+        <div class="form-group row">
+            <label asp-for="TableId" class="col-form-label col-5 col-sm-4 col-md-3 col-lg-2"></label>
+            <select class="custom-select col-7 col-sm-8 col-md-9 col-lg-10" asp-for="TableId" asp-items="@(new SelectList(Model.Tables, "Id", "TableNumber", Model.TableId))"></select>
+        </div>
+        <hr />
         @foreach (var kitchen in Model.KitchenDishes.OrderBy(kd => kd.Key.Name))
         {
             <h3>@kitchen.Key.Name</h3>
+
             <div class="row">
                 @foreach (var dish in kitchen.Value.OrderBy(d => d.Description))
                 {
@@ -40,7 +47,9 @@
                 }
             </div>
         }
-        <button type="submit" class="btn btn-success">@ViewData["Title"]</button>
+        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-paper-plane"></i> @ViewData["Title"]</button>
+
+        @Html.HiddenFor(m => m.ClientId)
     </form>
 </div>
 
