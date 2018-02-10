@@ -58,7 +58,12 @@ namespace Fos.Controllers
                 MergeDishOrders(ref model, ref data);
                 return View(model);
             }
-            return RedirectToAction(nameof(OrderController.Index), "Order");
+
+
+
+
+
+            return Saved();
         }
 
         private void MergeDishOrders(ref CreateViewModel model, ref Dictionary<string, string> data)

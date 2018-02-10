@@ -17,6 +17,6 @@ namespace Fos.Models
         [Column(TypeName = "CHAR(2)")]
         public string Code { get; set; }
 
-        public virtual ICollection<DishOrder> DishOrders { get; set; }
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

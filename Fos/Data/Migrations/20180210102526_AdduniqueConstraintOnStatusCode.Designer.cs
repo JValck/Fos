@@ -11,9 +11,10 @@ using System;
 namespace Fos.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180210102526_AdduniqueConstraintOnStatusCode")]
+    partial class AdduniqueConstraintOnStatusCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,6 +141,8 @@ namespace Fos.Data.Migrations
 
                     b.Property<int>("OrderId");
 
+                    b.Property<int>("StatusId");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate();
 
@@ -147,7 +150,9 @@ namespace Fos.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("DishOrders");
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("DishOrder");
                 });
 
             modelBuilder.Entity("Fos.Models.Kitchen", b =>
@@ -174,15 +179,11 @@ namespace Fos.Data.Migrations
                     b.Property<DateTime>("InsertedAt")
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<int>("StatusId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
                     b.HasIndex("DinnerTableId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("Orders");
                 });
@@ -353,6 +354,11 @@ namespace Fos.Data.Migrations
                         .WithMany("DishOrders")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Fos.Models.Status", "Status")
+                        .WithMany("DishOrders")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Fos.Models.Order", b =>
@@ -365,11 +371,6 @@ namespace Fos.Data.Migrations
                     b.HasOne("Fos.Models.DinnerTable", "DinnerTable")
                         .WithMany("Orders")
                         .HasForeignKey("DinnerTableId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Fos.Models.Status", "Status")
-                        .WithMany("Order")
-                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

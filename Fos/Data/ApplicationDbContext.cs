@@ -16,6 +16,7 @@ namespace Fos.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Kitchen> Kitchens { get; set; }
+        public DbSet<DishOrder> DishOrders { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -28,6 +29,7 @@ namespace Fos.Data
             base.OnModelCreating(builder);
             builder.Entity<DinnerTableClient>().HasKey(d => new { d.ClientId, d.DinnerTableId });
             builder.Entity<DishOrder>().HasKey(d => new { d.DishId, d.OrderId });
+            builder.Entity<Status>().HasIndex(s => new { s.Code }).IsUnique();
         }
     }
 }

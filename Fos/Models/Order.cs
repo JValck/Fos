@@ -23,5 +23,8 @@ namespace Fos.Models
         public DinnerTable DinnerTable { get; set; }
 
         public ICollection<DishOrder> DishOrders { get; set; }
+
+        public int StatusId { get; set; }
+        public Status Status { get; set; }
     }
 }

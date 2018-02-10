@@ -53,6 +53,9 @@ namespace Fos
             services.AddTransient<IKitchenRepository, KitchenRepository>();
             services.AddTransient<IDishesRepository, DishesRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IDishOrderRepository, DishOrderRepository>();
+            services.AddTransient<IStatusRepository, StatusRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddTransient<IStorage, DiskStorage>();
             services.AddTransient<IUserHelper, UserHelper>();

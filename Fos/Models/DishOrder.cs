@@ -14,9 +14,6 @@ namespace Fos.Models
         public Order Order { get; set; }
         public Dish Dish { get; set; }
 
-        public int StatusId { get; set; }
-        public Status Status { get; set; }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
     }

@@ -15,13 +15,13 @@ namespace Fos.Data.Migrations
                 name: "StatusId",
                 table: "DishOrder",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 1);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
                 table: "DishOrder",
                 nullable: false,
-                defaultValue: DateTime.Now);
+                defaultValueSql: "GETDATE()");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DishOrder_StatusId",
