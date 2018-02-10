@@ -12,18 +12,33 @@ namespace Fos.Repositories
     {
         private readonly ApplicationDbContext dbContext;
         private readonly IStatusRepository statusRepository;
-        private readonly IDishesRepository dishesRepository;
+        private readonly IDishOrderRepository dishOrderRepository;
 
-        public OrderRepository(ApplicationDbContext dbContext, IStatusRepository statusRepository, IDishesRepository dishesRepository)
+        public OrderRepository(ApplicationDbContext dbContext, IStatusRepository statusRepository, IDishOrderRepository dishOrderRepository)
         {
             this.dbContext = dbContext;
             this.statusRepository = statusRepository;
-            this.dishesRepository = dishesRepository;
+            this.dishOrderRepository = dishOrderRepository;
         }
 
-        public bool CreateOrder(int[] dishWithAmount, Client client, DinnerTable dinnerTable)
+        public bool CreateOrder(IDictionary<int, int> dishWithAmount, Client client, DinnerTable dinnerTable)
         {
-            throw new NotImplementedException();
+            var order = new Order
+            {
+                Client = client,
+                DinnerTable = dinnerTable,
+                InsertedAt = DateTime.Now,
+                Status = statusRepository.GetIncludedStatus(),
+                DishOrders = new List<DishOrder>(),
+            };
+            dbContext.Orders.Add(order);
+            dishOrderRepository.LinkDishesToOrder(dishWithAmount, order);
+            return dbContext.SaveChanges() > 0;
+        }
+
+        public Order Get(int id)
+        {
+            return dbContext.Orders.Find(id);
         }
 
         public bool RemoveOrder(int id)
@@ -38,9 +53,12 @@ namespace Fos.Repositories
             return RemoveOrder(order.Id);
         }
 
-        public bool UpdateOrder(int[] dishWithAmount, Client client, DinnerTable dinnerTable)
+        public bool UpdateOrder(Order order, IDictionary<int, int> dishWithAmount, DinnerTable dinnerTable)
         {
-            throw new NotImplementedException();
+            order.DinnerTable = dinnerTable;
+            dishOrderRepository.RemoveAllDishesFromOrder(order);
+            dishOrderRepository.LinkDishesToOrder(dishWithAmount, order);
+            return dbContext.SaveChanges() > 0;
         }
     }
 }

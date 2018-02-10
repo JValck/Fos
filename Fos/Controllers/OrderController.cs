@@ -58,10 +58,9 @@ namespace Fos.Controllers
                 MergeDishOrders(ref model, ref data);
                 return View(model);
             }
-
-
-
-
+            int parsed = 0;
+            Dictionary<int, int> dishIds = data.Where(d => int.TryParse(d.Key, out parsed)).ToDictionary(d => parsed, d => int.Parse(d.Value));
+            
 
             return Saved();
         }

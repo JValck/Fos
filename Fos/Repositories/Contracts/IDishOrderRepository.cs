@@ -23,5 +23,15 @@ namespace Fos.Repositories.Contracts
         /// <param name="dish">The dish to remove</param>
         /// <returns>True if saved</returns>
         bool RemoveFromOrder(Order order, Dish dish);
+        DishOrder Get(Order order, Dish dish);
+        bool RemoveAllDishesFromOrder(Order order);
+
+        /// <summary>
+        /// Links the dishes and there amount to the order
+        /// </summary>
+        /// <param name="dishWithAmount">Dictionary with the dish id as key and the amount as value</param>
+        /// <param name="order">The order where the dishes should be linked to</param>
+        /// <returns></returns>
+        bool LinkDishesToOrder(IDictionary<int, int> dishWithAmount, Order order);
     }
 }
