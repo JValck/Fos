@@ -70,8 +70,8 @@ namespace Fos.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                     else
-                    {                        
-                        return await GetRedirectAfterLoginForUserAsync(model.UserName);
+                    {
+                        return RedirectToAction(nameof(RedirectController.Index), "Redirect");
                     }
                 }
                 ModelState.AddModelError(string.Empty, "Ongeldige aanmelding.");
@@ -80,19 +80,6 @@ namespace Fos.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-        }
-
-        private async Task<IActionResult> GetRedirectAfterLoginForUserAsync(string userName)
-        {
-            var user = await  _userManager.FindByNameAsync(userName);
-            if(await _userManager.IsInRoleAsync(user , RoleName.Admin))
-            {
-                return RedirectToAction(nameof(AdminController.Index), "Admin");
-            }else if(await _userManager.IsInRoleAsync(user, RoleName.Waiter))
-            {
-                return RedirectToAction(nameof(ClientController.Index), "Client");
-            }
-            return RedirectToLocal(null);//go to homepage
         }
 
         [HttpPost]
