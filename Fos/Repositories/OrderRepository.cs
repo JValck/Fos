@@ -38,8 +38,8 @@ namespace Fos.Repositories
                         ApplicationUser = user,
                     };
                     dbContext.Orders.Add(order);
-                    dishOrderRepository.LinkDishesToOrder(dishWithAmount, order);
-                    saved = dbContext.SaveChanges() > 0;
+                    dbContext.SaveChanges();
+                    saved = dishOrderRepository.LinkDishesToOrder(dishWithAmount, order);                    
                     transaction.Commit();
                 }
                 catch (Exception)

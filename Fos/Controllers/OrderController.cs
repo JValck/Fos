@@ -62,8 +62,8 @@ namespace Fos.Controllers
             }
             int parsed = 0;
             Dictionary<int, int> dishIds = data.Where(d => int.TryParse(d.Key, out parsed)).ToDictionary(d => parsed, d => int.Parse(d.Value));
-            orderRepository.CreateOrder(dishIds, clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
-            return Saved();
+            var saved = orderRepository.CreateOrder(dishIds, clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
+            return (saved) ? Saved():NotSaved();
         }
 
         private void MergeDishOrders(ref CreateViewModel model, ref Dictionary<string, string> data)
@@ -88,7 +88,12 @@ namespace Fos.Controllers
 
         public IActionResult Saved()
         {
-            return View();
+            return View("Saved");
+        }
+
+        public IActionResult NotSaved()
+        {
+            return View("NotSaved");
         }
     }
 }

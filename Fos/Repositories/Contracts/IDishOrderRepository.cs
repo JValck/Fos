@@ -13,8 +13,9 @@ namespace Fos.Repositories.Contracts
         /// </summary>
         /// <param name="order">The order to link to</param>
         /// <param name="dish">The dish to order</param>
+        /// <param name="amount">The amount of the dish</param>
         /// <returns>True if saved</returns>
-        bool CreateForOrder(Order order, Dish dish);
+        bool CreateForOrder(Order order, Dish dish, int amount);
 
         /// <summary>
         /// Removes a dish from the order

@@ -19,13 +19,14 @@ namespace Fos.Repositories
             this.dishesRepository = dishesRepository;
         }
 
-        public bool CreateForOrder(Order order, Dish dish)
+        public bool CreateForOrder(Order order, Dish dish, int amount)
         {
             var dishOrder = new DishOrder
             {
                 Dish = dish,
                 Order = order,
                 UpdatedAt = DateTime.Now,
+                Amount = amount,
             };
             dbContext.DishOrders.Add(dishOrder);
             return dbContext.SaveChanges() > 0;
@@ -38,18 +39,20 @@ namespace Fos.Repositories
 
         public bool LinkDishesToOrder(IDictionary<int, int> dishWithAmount, Order order)
         {
+            var saved = false;
             foreach (KeyValuePair<int, int> entry in dishWithAmount)
             {
                 if (entry.Value > 0)
                 {
                     var dish = dishesRepository.Get(entry.Key);
-                    for (var current = 0; current < entry.Value; current++)
+                    if (CreateForOrder(order, dish, entry.Value) && !saved)
                     {
-                        CreateForOrder(order, dish);
+                        saved = true;
                     }
                 }
             }
-            return dbContext.SaveChanges() > 0;
+            //No SaveChanges() here as the CreateForOrder calls it
+            return saved;
         }
 
         public bool RemoveAllDishesFromOrder(Order order)
