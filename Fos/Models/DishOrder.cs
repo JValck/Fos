@@ -16,5 +16,7 @@ namespace Fos.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
+
+        public int Amount { get; set; }
     }
 }

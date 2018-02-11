@@ -43,7 +43,7 @@ namespace Fos.Controllers
             if (ModelState.IsValid)
             {
                 var client = clientRepository.Create(model.Name, dinnerTableRepository.Get(model.TableId));
-                return RedirectToAction(nameof(OrderController.Create), "Order", client.Id);
+                return RedirectToAction(nameof(OrderController.Create), "Order", new { id = client.Id });
             }
             model.DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList();
             return View(model);

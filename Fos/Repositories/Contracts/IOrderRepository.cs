@@ -8,8 +8,8 @@ namespace Fos.Repositories.Contracts
 {
     public interface IOrderRepository
     {
-        bool CreateOrder(IDictionary<int, int> dishWithAmount, Client client, DinnerTable dinnerTable);
-        bool UpdateOrder(Order order, IDictionary<int, int> dishWithAmount, DinnerTable dinnerTable);
+        bool CreateOrder(IDictionary<int, int> dishWithAmount, Client client, DinnerTable dinnerTable, ApplicationUser user);
+        bool UpdateOrder(Order order, IDictionary<int, int> dishWithAmount, DinnerTable dinnerTable, ApplicationUser user);
         bool RemoveOrder(int id);
         bool RemoveOrder(Order order);
         Order Get(int id);
