@@ -18,12 +18,11 @@ namespace Fos.Repositories
             this.dbContext = dbContext;
         }
 
-        public Client Create(string name, DinnerTable table, ApplicationUser applicationUser)
+        public Client Create(string name, DinnerTable table)
         {
             var client = new Client
             {
-                Name = name,                
-                ApplicationUser = applicationUser,
+                Name = name,
                 DinnerTableClients = new List<DinnerTableClient>(),
             };
             client.DinnerTableClients.Add(new DinnerTableClient { DinnerTable = table});

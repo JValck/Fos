@@ -16,13 +16,11 @@ namespace Fos.Controllers
     {
         private readonly IDinnerTableRepository dinnerTableRepository;
         private readonly IClientRepository clientRepository;
-        private readonly IUserHelper userHelper;
 
-        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository, IUserHelper userHelper)
+        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository)
         {
             this.dinnerTableRepository = dinnerTableRepository;
             this.clientRepository = clientRepository;
-            this.userHelper = userHelper;
         }
 
         [Authorize(Roles = RoleName.Waiter)]
@@ -44,7 +42,7 @@ namespace Fos.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = clientRepository.Create(model.Name, dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
+                var client = clientRepository.Create(model.Name, dinnerTableRepository.Get(model.TableId));
                 return RedirectToAction(nameof(OrderController.Create), "Order", client.Id);
             }
             model.DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList();

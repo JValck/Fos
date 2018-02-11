@@ -26,5 +26,8 @@ namespace Fos.Models
 
         public int StatusId { get; set; }
         public Status Status { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -19,13 +19,15 @@ namespace Fos.Controllers
         private readonly IDishesRepository dishesRepository;
         private readonly IDinnerTableRepository dinnerTableRepository;
         private readonly IUserHelper userHelper;
+        private readonly IOrderRepository orderRepository;
 
-        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IDinnerTableRepository dinnerTableRepository, IUserHelper userHelper)
+        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IDinnerTableRepository dinnerTableRepository, IUserHelper userHelper, IOrderRepository orderRepository)
         {
             this.clientRepository = clientRepository;
             this.dishesRepository = dishesRepository;
             this.dinnerTableRepository = dinnerTableRepository;
             this.userHelper = userHelper;
+            this.orderRepository = orderRepository;
         }
 
         public IActionResult Index()

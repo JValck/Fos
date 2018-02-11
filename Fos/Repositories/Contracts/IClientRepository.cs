@@ -8,7 +8,7 @@ namespace Fos.Repositories.Contracts
 {
     public interface IClientRepository
     {
-        Client Create(string name, DinnerTable table, ApplicationUser applicationUser);
+        Client Create(string name, DinnerTable table);
 
         /// <summary>
         /// Searches for a string pattern in the name
