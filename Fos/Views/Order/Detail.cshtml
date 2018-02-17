@@ -1,0 +1,11 @@
+﻿@model Fos.Models.Order
+
+@{
+    ViewData["Title"] = Localizer["Details"];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    @Html.Partial("~/Views/DishOrder/Partial/ChosenDishes.cshtml", Model.DishOrders)
+</div>

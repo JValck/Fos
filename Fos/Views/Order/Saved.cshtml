@@ -8,7 +8,7 @@
         <div class="d-block">
             <h1 class="text-center text-success text-uppercase"><i class="fas fa-check"></i> @ViewData["Title"]</h1>
             <div class="d-flex justify-content-center">
-                <a href="#" class="btn btn-outline-primary text-center"><i class="fas fa-home"></i> @Localizer["Naar het startscherm"]</a>
+                <a asp-controller="Redirect" asp-action="Index" class="btn btn-outline-primary text-center"><i class="fas fa-home"></i> @Localizer["Naar het startscherm"]</a>
             </div>
         </div>
     </div>

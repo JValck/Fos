@@ -40,7 +40,7 @@ namespace Fos.Repositories
         {
             return dbContext.Clients
                 .Include(c => c.DinnerTableClients).ThenInclude(dtc => dtc.DinnerTable)
-                .First(c => c.Id == id);
+                .FirstOrDefault(c => c.Id == id);
         }
 
         public IList<Client> GetAll()

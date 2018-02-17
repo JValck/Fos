@@ -19,5 +19,7 @@ namespace Fos.Models.OrderViewModels
         public int ClientId { get; internal set; }
         
         public Dictionary<int, int> DishOrders { get; set; }
+
+        public bool IsUpdate { get; set; }
     }
 }

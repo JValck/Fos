@@ -1,0 +1,13 @@
+﻿@model IEnumerable<DishOrder>
+
+<table class="table">
+    <tbody>
+        @foreach(var dishOrder in Model.OrderBy(d => d.Dish.Description))
+        {
+            <tr>
+                <td>@dishOrder.Dish.Description</td>
+                <td>@dishOrder.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>

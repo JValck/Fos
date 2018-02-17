@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Fos.Models.Order>
+
+@{
+    ViewData["Title"] = Localizer["Overzicht bestellingen"];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <a asp-controller="Order" asp-action="Create" asp-route-id="@ViewData["ClientId"]" class="mb-4 btn btn-outline-primary"><i class="fas fa-plus"></i> @Localizer["Nieuwe bestelling"]</a>    
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Localizer["Uur"]
+                </th>
+                <th>
+                    @Localizer["Tafel"]
+                </th>
+                <th>
+                    @Localizer["Status"]
+                </th>
+                <th>
+                    @Localizer["Door"]
+                </th>
+                <th colspan="2" class="text-center">
+                    @Localizer["Acties"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderBy(o => o.InsertedAt))
+            {
+            <tr>
+                <td>
+                    @item.InsertedAt.ToString("dd/MM/yyyy") - @item.InsertedAt.ToString("HH:mm:ss")
+                </td>
+                <td>
+                    @item.DinnerTable.TableNumber
+                </td>
+                <td>
+                    @Localizer[item.Status.Description]
+                </td>
+                <td>
+                    @item.ApplicationUser.UserName
+                </td>
+                <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#4CD4B0; cursor: pointer;">
+                    <a href="/Order/Detail/@item.Id" class="text-light">@Localizer["Details"]</a>
+                </td>
+                <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#EDD834; cursor: pointer;">
+                    <a asp-controller="Order" asp-action="Edit" asp-route-id="@item.Id" class="text-light">@Localizer["Wijzigen"]</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

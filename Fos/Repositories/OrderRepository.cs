@@ -1,6 +1,7 @@
 ﻿using Fos.Data;
 using Fos.Models;
 using Fos.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,8 +52,26 @@ namespace Fos.Repositories
         }
 
         public Order Get(int id)
+        {            
+            return dbContext.Orders
+                .Where(o => o.Id == id)
+                .Include(o => o.DinnerTable)
+                .Include(o => o.DishOrders).ThenInclude(dishOrder => dishOrder.Dish)
+                .FirstOrDefault();
+        }
+
+        public Order Get(Client client)
         {
-            return dbContext.Orders.Find(id);
+            return Get(client.Id);
+        }
+
+        public IList<Order> GetOrdersForClient(Client client)
+        {
+            return dbContext.Orders.Where(o => o.ClientId == client.Id)
+                    .Include(o => o.Status)
+                    .Include(o => o.ApplicationUser)
+                    .Include(o => o.DinnerTable)
+                    .ToList();
         }
 
         public bool RemoveOrder(int id)
