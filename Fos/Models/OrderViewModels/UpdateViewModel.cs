@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Fos.Models.OrderViewModels
 {
-    public class UpdateViewModel:CreateViewModel
+    public class UpdateViewModel:FormViewModel
     {
         public UpdateViewModel()
         {

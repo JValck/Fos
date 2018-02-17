@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fos.Models.OrderViewModels
 {
-    public class CreateViewModel
+    public class FormViewModel
     {
         public IDictionary<Kitchen, List<Dish>> KitchenDishes { get; set; }
         public IList<DinnerTable> Tables { get; set; }

@@ -34,5 +34,14 @@ namespace Fos.Repositories.Contracts
         /// <param name="order">The order where the dishes should be linked to</param>
         /// <returns></returns>
         bool LinkDishesToOrder(IDictionary<int, int> dishWithAmount, Order order);
+
+        /// <summary>
+        /// Creates a dicationary for a given order with:
+        /// dishId as key
+        /// amount as value
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns>Dictoronary</returns>
+        IDictionary<int, int> MapDishAndAmountFor(Order order);
     }
 }

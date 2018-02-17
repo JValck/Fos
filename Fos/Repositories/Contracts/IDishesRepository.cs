@@ -18,6 +18,11 @@ namespace Fos.Repositories.Contracts
         /// <param name="id"></param>
         /// <returns></returns>
         Dish Get(int id);
-        IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchen();
+
+        /// <summary>
+        /// A dicationary with all the dishes that are not exhausted grouped by kitchen
+        /// </summary>
+        /// <returns></returns>
+        IDictionary<Kitchen, List<Dish>> GetAllAvailableGroupedByKitchen();
     }
 }

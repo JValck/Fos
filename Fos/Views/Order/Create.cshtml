@@ -1,4 +1,4 @@
-﻿@model Fos.Models.OrderViewModels.CreateViewModel
+﻿@model Fos.Models.OrderViewModels.FormViewModel
 
 @{
     ViewData["Title"] = Localizer["Bestelling aanmaken"];
@@ -6,7 +6,7 @@
 
 <div class="container">
     <h2>@ViewData["Title"]</h2>
-    <form method="post">
+    <form method="post" asp-action="@(Model.IsUpdate?"Edit":"Create")">
         <button type="submit" class="btn btn-success btn-block m-md-2"><i class="fas fa-paper-plane"></i> @ViewData["Title"]</button>
 
         <div class="form-group row">

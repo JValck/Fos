@@ -55,6 +55,7 @@ namespace Fos.Repositories
         {            
             return dbContext.Orders
                 .Where(o => o.Id == id)
+                .Include(o => o.Client)
                 .Include(o => o.DinnerTable)
                 .Include(o => o.DishOrders).ThenInclude(dishOrder => dishOrder.Dish)
                 .FirstOrDefault();
@@ -93,11 +94,12 @@ namespace Fos.Repositories
             {
                 try
                 {
+                    dbContext.Entry(order).State = EntityState.Modified;
                     order.DinnerTable = dinnerTable;
                     order.ApplicationUser = user;
-                    dishOrderRepository.RemoveAllDishesFromOrder(order);
-                    dishOrderRepository.LinkDishesToOrder(dishWithAmount, order);
-                    saved = dbContext.SaveChanges() > 0;
+                    order.Status = statusRepository.GetUpdatedStatus();
+                    saved = dishOrderRepository.RemoveAllDishesFromOrder(order);
+                    saved = (saved) ? dishOrderRepository.LinkDishesToOrder(dishWithAmount, order) : true;
                     transaction.Commit();
                 }
                 catch (Exception)

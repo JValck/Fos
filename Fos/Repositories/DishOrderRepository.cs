@@ -55,6 +55,12 @@ namespace Fos.Repositories
             return saved;
         }
 
+        public IDictionary<int, int> MapDishAndAmountFor(Order order)
+        {
+            dbContext.Entry(order).Collection(o => o.DishOrders);
+            return order.DishOrders.ToDictionary(d => d.DishId, d => d.Amount);
+        }
+
         public bool RemoveAllDishesFromOrder(Order order)
         {
             var allDishOrders = dbContext.DishOrders.Where(d => d.OrderId == order.Id).ToArray();
