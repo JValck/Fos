@@ -19,14 +19,20 @@ namespace Fos.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (await _userManager.IsInRoleAsync(user, RoleName.Admin))
+            if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction(nameof(AdminController.Index), "Admin");
-            }
-            else if (await _userManager.IsInRoleAsync(user, RoleName.Waiter))
-            {
-                return RedirectToAction(nameof(ClientController.Index), "Client");
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (await _userManager.IsInRoleAsync(user, RoleName.Admin))
+                {
+                    return RedirectToAction(nameof(AdminController.Index), "Admin");
+                }
+                else if (await _userManager.IsInRoleAsync(user, RoleName.Waiter))
+                {
+                    return RedirectToAction(nameof(ClientController.Index), "Client");
+                }else if(await _userManager.IsInRoleAsync(user, RoleName.Cashier))
+                {
+                    return RedirectToAction(nameof(CashierController.Index), "Cashier");
+                }
             }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }        

@@ -139,5 +139,17 @@ namespace Fos.Controllers
             model.Kitchens = kitchenRepository.GetAll();
             return View(model);
         }
+
+        /// <summary>
+        /// Method used by the cashier to see stats of the sold dishes
+        /// Allows a dish to be exhausted
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [Authorize(Roles = RoleName.Admin+","+RoleName.Cashier)]
+        public IActionResult Active()
+        {
+            var data = dishesRepository.GetAllGroupedByKitchenWithDishOrders();
+            return View();
+        }
     }
 }

@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Kassier";
+}
+
+<div class="container">
+    <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top" src="~/images/search_client.png" alt="@Localizer["Klanten"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Klanten en afrekenen"]</h5>
+                <p class="card-text">@Localizer["Via deze module kan u de klanten beheren. U kan klanten aanmaken, hun bestellingen bekijken, klanten laten betalen,..."]</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="Client" asp-action="Index" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/images/dishes.png" alt="@Localizer["Menubeheer"]">
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["Menubeheer"]</h5>
+                <p class="card-text">@Localizer["Via deze module kan u nagaan hoeveel er van elk menu al verkocht is. U kan er ook aangeven of een menu is uitgeput"].</p>
+                <p class="card-text">@Localizer["Om menu's toe te voegen, verwijderen of aan te passen moet u aangemeld zijn als beheerder"].</p>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <a asp-controller="Dish" asp-action="Active" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+            </div>
+        </div>
+    </div>
+</div>

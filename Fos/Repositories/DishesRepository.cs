@@ -52,6 +52,14 @@ namespace Fos.Repositories
             return all.Where(d => !d.Exhausted).GroupBy(d => d.Kitchen).ToDictionary(g => g.Key, g => g.ToList());
         }
 
+        public IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchenWithDishOrders()
+        {
+            var all = dbContext.Dishes.Include(d => d.Kitchen)
+                                    .Include(d => d.DishOrders)
+                                    .ToList();
+            return all.GroupBy(d => d.Kitchen).ToDictionary(g => g.Key, g => g.ToList());
+        }
+
         public void Update(int id, string description, double price, int kitchenId, string imageUrl = null)
         {
             var obj = Get(id);

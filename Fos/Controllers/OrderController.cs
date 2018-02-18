@@ -32,11 +32,6 @@ namespace Fos.Controllers
             this.dishOrderRepository = dishOrderRepository;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [Route("[controller]/[action]/{clientId}")]
         public IActionResult Create(int clientId)
         {

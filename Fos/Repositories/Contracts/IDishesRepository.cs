@@ -24,5 +24,11 @@ namespace Fos.Repositories.Contracts
         /// </summary>
         /// <returns></returns>
         IDictionary<Kitchen, List<Dish>> GetAllAvailableGroupedByKitchen();
+
+        /// <summary>
+        /// A dictionary with all the dishes and loaded dish orders grouped by kitchen
+        /// </summary>
+        /// <returns></returns>
+        IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchenWithDishOrders();
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fos.Controllers
 {
     [Authorize]
+    [Authorize(Roles = RoleName.Waiter + "," + RoleName.Cashier)]
     public class ClientController : Controller
     {
         private readonly IDinnerTableRepository dinnerTableRepository;
@@ -22,14 +23,12 @@ namespace Fos.Controllers
             this.dinnerTableRepository = dinnerTableRepository;
             this.clientRepository = clientRepository;
         }
-
-        [Authorize(Roles = RoleName.Waiter)]
+        
         public IActionResult Index()
         {
             return View();
         }
-
-        [Authorize(Roles = RoleName.Waiter+","+RoleName.Cashier)]
+        
         public IActionResult Create()
         {
             var model = new CreateViewModel { DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList() };
@@ -37,7 +36,6 @@ namespace Fos.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = RoleName.Waiter + "," + RoleName.Cashier)]
         public IActionResult Create(CreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -48,8 +46,7 @@ namespace Fos.Controllers
             model.DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList();
             return View(model);
         }
-
-        [Authorize(Roles = RoleName.Waiter + "," + RoleName.Cashier)]
+        
         public IActionResult Search()
         {
             return View(clientRepository.GetAll().OrderBy(c => c.Name).ToList());
