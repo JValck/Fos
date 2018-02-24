@@ -149,7 +149,7 @@ namespace Fos.Controllers
         public IActionResult Active()
         {
             var data = dishesRepository.GetAllGroupedByKitchenWithDishOrders();
-            return View();
+            return View(data);
         }
     }
 }
