@@ -72,7 +72,33 @@ namespace Fos.Repositories
                     .Include(o => o.Status)
                     .Include(o => o.ApplicationUser)
                     .Include(o => o.DinnerTable)
+                    .Include(o => o.DishOrders).ThenInclude(d => d.Dish)
                     .ToList();
+        }
+
+        public bool MarkAllOrdersAsPayedForClient(Client client)
+        {
+            var saved = false;
+            using(var transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var orders = dbContext.Orders.Where(o => o.ClientId == client.Id).Where(o => o.Status != statusRepository.GetPayedStatus());
+                    foreach(var order in orders)
+                    {
+                        dbContext.Entry(order).State = EntityState.Modified;
+                        order.Status = statusRepository.GetPayedStatus();
+                    }
+                    dbContext.SaveChanges();
+                    transaction.Commit();
+                    saved = true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
+            return saved;
         }
 
         public bool RemoveOrder(int id)

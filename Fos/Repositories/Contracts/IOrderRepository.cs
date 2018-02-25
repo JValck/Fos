@@ -15,5 +15,6 @@ namespace Fos.Repositories.Contracts
         Order Get(int id);
         IList<Order> GetOrdersForClient(Client client);
         Order Get(Client client);
+        bool MarkAllOrdersAsPayedForClient(Client client);
     }
 }

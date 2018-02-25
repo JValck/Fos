@@ -44,6 +44,7 @@ gulp.task('sass', function () {
 gulp.task('js', function () {
     convertJs('app.js');
     convertJs('createOrder.js');
+    convertJs('pay.js');
 });
 
 function convertJs(jsFileName) {

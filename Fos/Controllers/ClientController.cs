@@ -17,18 +17,22 @@ namespace Fos.Controllers
     {
         private readonly IDinnerTableRepository dinnerTableRepository;
         private readonly IClientRepository clientRepository;
+        private readonly IOrderRepository orderRepository;
+        private readonly IStatusRepository statusRepository;
 
-        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository)
+        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository, IOrderRepository orderRepository, IStatusRepository statusRepository)
         {
             this.dinnerTableRepository = dinnerTableRepository;
             this.clientRepository = clientRepository;
+            this.orderRepository = orderRepository;
+            this.statusRepository = statusRepository;
         }
-        
+
         public IActionResult Index()
         {
             return View();
         }
-        
+
         public IActionResult Create()
         {
             var model = new CreateViewModel { DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList() };
@@ -46,7 +50,7 @@ namespace Fos.Controllers
             model.DinnerTables = dinnerTableRepository.GetAll().OrderBy(t => t.TableNumber).ToList();
             return View(model);
         }
-        
+
         public IActionResult Search()
         {
             return View(clientRepository.GetAll().OrderBy(c => c.Name).ToList());
@@ -65,6 +69,28 @@ namespace Fos.Controllers
         public IActionResult Delete(Client client)
         {
             clientRepository.Delete(client);
+            return RedirectToAction(nameof(ClientController.Search), "Client");
+        }
+
+        [Authorize(Roles = RoleName.Cashier)]
+        public IActionResult Pay(int id)
+        {
+            var client = clientRepository.Get(id);
+            if (client == null) return NotFound();
+            var model = new PayViewModel
+            {
+                Orders = orderRepository.GetOrdersForClient(client).Where(o => o.Status != statusRepository.GetPayedStatus()).ToList(),
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleName.Cashier)]
+        public IActionResult Pay(PayViewModel model, int id)
+        {
+            var client = clientRepository.Get(id);
+            if (client == null) return NotFound();
+            orderRepository.MarkAllOrdersAsPayedForClient(client);
             return RedirectToAction(nameof(ClientController.Search), "Client");
         }
     }
