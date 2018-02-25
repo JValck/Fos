@@ -30,5 +30,12 @@ namespace Fos.Repositories.Contracts
         /// </summary>
         /// <returns></returns>
         IDictionary<Kitchen, List<Dish>> GetAllGroupedByKitchenWithDishOrders();
+
+        /// <summary>
+        /// Syncs the exhausted dishes depending with the dishes with ids from parameter
+        /// </summary>
+        /// <param name="exhaustedDishIds">A list of the new exhausted dish ids</param>
+        /// <returns>True if updated</returns>
+        bool SyncExhausted(IEnumerable<int> exhaustedDishIds);
     }
 }

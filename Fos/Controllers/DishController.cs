@@ -151,5 +151,14 @@ namespace Fos.Controllers
             var data = dishesRepository.GetAllGroupedByKitchenWithDishOrders();
             return View(data);
         }
+                
+        [Authorize(Roles = RoleName.Admin + "," + RoleName.Cashier)]
+        [HttpPost]
+        public IActionResult Active(IDictionary<String, int> exhaustedDishes)
+        {
+            int id = -1;
+            dishesRepository.SyncExhausted(exhaustedDishes.Where(e => int.TryParse(e.Key, out id)).Select(e => int.Parse(e.Key)));
+            return RedirectToAction(nameof(RedirectController.Index), "Redirect");
+        }
     }
 }

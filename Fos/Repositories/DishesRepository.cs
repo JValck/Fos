@@ -60,6 +60,23 @@ namespace Fos.Repositories
             return all.GroupBy(d => d.Kitchen).ToDictionary(g => g.Key, g => g.ToList());
         }
 
+        public bool SyncExhausted(IEnumerable<int> exhaustedDishIds)
+        {
+            foreach(var dish in dbContext.Dishes.Select(d => d))
+            {
+                dbContext.Entry(dish).State = EntityState.Modified;
+                if (exhaustedDishIds.Contains(dish.Id))
+                {
+                    dish.Exhausted = true;
+                }
+                else
+                {
+                    dish.Exhausted = false;
+                }
+            }
+            return dbContext.SaveChanges() > 0;
+        }
+
         public void Update(int id, string description, double price, int kitchenId, string imageUrl = null)
         {
             var obj = Get(id);

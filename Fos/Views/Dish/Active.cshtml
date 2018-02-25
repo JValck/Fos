@@ -1,32 +1,37 @@
 ﻿@model IDictionary<Kitchen, List<Dish>>
 
-    @{ 
-        ViewData["Title"] = Localizer["Menu's"];
-    }
+@{
+    ViewData["Title"] = Localizer["Menu's"];
+}
 
 <div class="container">
     <h1>@ViewData["Title"]</h1>
-    @foreach(var kitchen in Model.OrderBy(k => k.Key.Name))
-    {
-        <h2>@kitchen.Key.Name</h2>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>@Localizer["Naam"]</th>
-                    <th class="text-center">@Localizer["Aantal"]</th>
-                    <th class="text-center">@Localizer["Uitgeput"]?</th>
-                </tr>                
-            </thead>
-            <tbody>
-                @foreach(var dish in kitchen.Value)
-                {
-                <tr>
-                    <td>@dish.Description</td>
-                    <td class="text-center">@dish.DishOrders.Sum(d => d.Amount)</td>
-                    <td class="text-center"><input type="checkbox" @(dish.Exhausted?"checked":"")></td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    }
+    <form asp-controller="Dish" asp-action="Active" method="post">
+        @foreach (var kitchen in Model.OrderBy(k => k.Key.Name))
+        {
+            <h2>@kitchen.Key.Name</h2>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>@Localizer["Naam"]</th>
+                        <th class="text-center">@Localizer["Aantal"]</th>
+                        <th class="text-center">@Localizer["Uitgeput"]?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dish in kitchen.Value)
+                    {
+                        <tr>
+                            <td>@dish.Description</td>
+                            <td class="text-center">@dish.DishOrders.Sum(d => d.Amount)</td>
+                            <td class="text-center">
+                                <input type="checkbox" @(dish.Exhausted ? "checked" : "") name="@dish.Id">
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> @Localizer["Opslaan"]</button>
+    </form>
 </div>
