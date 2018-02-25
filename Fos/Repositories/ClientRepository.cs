@@ -31,6 +31,12 @@ namespace Fos.Repositories
             return client;
         }
 
+        public bool Delete(Client client)
+        {
+            dbContext.Clients.Remove(client);
+            return dbContext.SaveChanges() > 0;
+        }
+
         public bool Exists(int clientId)
         {
             return (Get(clientId) != null);

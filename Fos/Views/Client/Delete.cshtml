@@ -1,0 +1,17 @@
+﻿@model Fos.Models.Client
+
+@{
+    ViewData["Title"] = Localizer["{0} verwijderen", Model.Name];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <h3>@Localizer["Bent u zeker dat u {0} wil verwijderen", Model.Name]?</h3>
+    <p class="font-weight-bold">@Localizer["Deze actie kan niet ongedaan gemaakt worden. Bestellingen en opbrengsten zullen mee verwijderd worden"]</p>
+
+        <form asp-action="Delete">
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> @ViewData["Title"]</button>
+        </form>
+    </div>
+</div>

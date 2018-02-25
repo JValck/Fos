@@ -51,5 +51,21 @@ namespace Fos.Controllers
         {
             return View(clientRepository.GetAll().OrderBy(c => c.Name).ToList());
         }
+
+        [Authorize(Roles = RoleName.Cashier)]
+        public IActionResult Delete(int id)
+        {
+            var client = clientRepository.Get(id);
+            if (client == null) return NotFound();
+            return View(client);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleName.Cashier)]
+        public IActionResult Delete(Client client)
+        {
+            clientRepository.Delete(client);
+            return RedirectToAction(nameof(ClientController.Search), "Client");
+        }
     }
 }

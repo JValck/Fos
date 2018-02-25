@@ -20,5 +20,6 @@ namespace Fos.Repositories.Contracts
         IList<Client> GetAll();
         bool Exists(int clientId);
         Client Get(int id);
+        bool Delete(Client client);
     }
 }
