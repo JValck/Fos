@@ -58,7 +58,7 @@ namespace Fos.Controllers
                 dishesRepository.Add(new Dish
                 {
                     Description = viewModel.Description,
-                    Price = Convert.ToDouble(viewModel.Price),
+                    Price = viewModel.Price,
                     ImageUrl = imagePath,
                     KitchenId = viewModel.KitchenId
                 });

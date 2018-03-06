@@ -1,4 +1,4 @@
-﻿
+﻿@inject Fos.Repositories.Contracts.IKitchenRepository KitchenRepository
 @{
     ViewData["Title"] = Localizer["Administrator dashboard"];
 }
@@ -33,7 +33,7 @@
                 <p class="card-text">@Localizer["Via deze optie kan u gerechten en dranken beheren en samenstellen"].</p>
             </div>
             <div class="card-footer d-flex justify-content-center">
-                <a asp-controller="Dish" asp-action="Manage" class="btn btn-primary"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
+                <a asp-controller="Dish" asp-action="Manage" class="btn  @((KitchenRepository.GetAll().Count == 0) ? "btn-secondary disabled":"btn-primary")" aria-disabled="@((KitchenRepository.GetAll().Count == 0) ? "true":"false")"><i class="fas fa-external-link-square-alt"></i> @Localizer["Beheren"]</a>
             </div>
         </div>
         <div class="card">
