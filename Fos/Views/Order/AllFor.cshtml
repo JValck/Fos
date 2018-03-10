@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Fos.Models.Order>
-
+@inject Fos.Repositories.Contracts.IStatusRepository StatusRepository
 @{
     ViewData["Title"] = Localizer["Overzicht bestellingen"];
 }
@@ -24,7 +24,7 @@
                 <th>
                     @Localizer["Door"]
                 </th>
-                <th colspan="2" class="text-center">
+                <th colspan="3" class="text-center">
                     @Localizer["Acties"]
                 </th>
             </tr>
@@ -48,8 +48,14 @@
                 <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#4CD4B0; cursor: pointer;">
                     <a href="/Order/Detail/@item.Id" class="text-light">@Localizer["Details"]</a>
                 </td>
-                <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#EDD834; cursor: pointer;">
-                    <a asp-controller="Order" asp-action="Edit" asp-route-id="@item.Id" class="text-light">@Localizer["Wijzigen"]</a>
+                @if (item.StatusId != StatusRepository.GetPayedStatus().Id)
+    {
+            <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#EDD834; cursor: pointer;">
+                <a asp-controller="Order" asp-action="Edit" asp-route-id="@item.Id" class="text-light">@Localizer["Wijzigen"]</a>
+            </td>
+}
+                <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#7D1424; cursor: pointer;">
+                    <a asp-controller="Order" asp-action="Delete" asp-route-id="@item.Id" class="text-light">@Localizer["Verwijderen"]</a>
                 </td>
             </tr>
             }

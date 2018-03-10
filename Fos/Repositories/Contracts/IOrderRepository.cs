@@ -14,7 +14,7 @@ namespace Fos.Repositories.Contracts
         bool RemoveOrder(Order order);
         Order Get(int id);
         IList<Order> GetOrdersForClient(Client client);
-        Order Get(Client client);
-        bool MarkAllOrdersAsPayedForClient(Client client);
+        Order Get(Order order);
+        bool MarkAllOrdersAsPayedForClient(Client client);        
     }
 }

@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<DishOrder>
 
 <table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Localizer["Menu"]</th>
+            <th>@Localizer["Aantal"]</th>
+        </tr>
+    </thead>
     <tbody>
-        @foreach(var dishOrder in Model.OrderBy(d => d.Dish.Description))
+        @foreach (var dishOrder in Model.OrderBy(d => d.Dish.Description))
         {
             <tr>
                 <td>@dishOrder.Dish.Description</td>

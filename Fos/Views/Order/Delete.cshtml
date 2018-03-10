@@ -1,0 +1,15 @@
+﻿@model Fos.Models.Order
+@{
+    ViewData["Title"] = Localizer["Bestelling van {0} om {1} verwijderen", Model.Client.Name, Model.InsertedAt];
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]?</h2>
+    <h3>Overzicht</h3>
+
+    @Html.Partial("~/Views/DishOrder/Partial/ChosenDishes.cshtml", Model.DishOrders)
+
+    <form asp-action="Delete" method="post">
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> @ViewData["Title"]</button>
+    </form>
+</div>

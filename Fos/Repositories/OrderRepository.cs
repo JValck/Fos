@@ -58,12 +58,13 @@ namespace Fos.Repositories
                 .Include(o => o.Client)
                 .Include(o => o.DinnerTable)
                 .Include(o => o.DishOrders).ThenInclude(dishOrder => dishOrder.Dish)
+                .Include(o => o.Status)
                 .FirstOrDefault();
         }
 
-        public Order Get(Client client)
+        public Order Get(Order order)
         {
-            return Get(client.Id);
+            return Get(order.Id);
         }
 
         public IList<Order> GetOrdersForClient(Client client)

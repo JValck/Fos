@@ -21,8 +21,9 @@ namespace Fos.Controllers
         private readonly IUserHelper userHelper;
         private readonly IOrderRepository orderRepository;
         private readonly IDishOrderRepository dishOrderRepository;
+        private readonly IStatusRepository statusRepository;
 
-        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IDinnerTableRepository dinnerTableRepository, IUserHelper userHelper, IOrderRepository orderRepository, IDishOrderRepository dishOrderRepository)
+        public OrderController(IClientRepository clientRepository, IDishesRepository dishesRepository, IDinnerTableRepository dinnerTableRepository, IUserHelper userHelper, IOrderRepository orderRepository, IDishOrderRepository dishOrderRepository, IStatusRepository statusRepository)
         {
             this.clientRepository = clientRepository;
             this.dishesRepository = dishesRepository;
@@ -30,6 +31,7 @@ namespace Fos.Controllers
             this.userHelper = userHelper;
             this.orderRepository = orderRepository;
             this.dishOrderRepository = dishOrderRepository;
+            this.statusRepository = statusRepository;
         }
 
         [Route("[controller]/[action]/{clientId}")]
@@ -121,6 +123,7 @@ namespace Fos.Controllers
         {
             var order = orderRepository.Get(id);
             if (order == null) return NotFound();
+            if (order.Status == statusRepository.GetPayedStatus()) return Forbid();
             FormViewModel viewModel = new UpdateViewModel();
             viewModel.ClientId = order.ClientId;
             var mapped = dishOrderRepository.MapDishAndAmountFor(order).ToDictionary(m => m.Key.ToString(), m => m.Value.ToString());
@@ -151,5 +154,20 @@ namespace Fos.Controllers
             return data.Where(d => int.TryParse(d.Key, out parsed)).ToDictionary(d => parsed, d => int.Parse(d.Value));
         }
         
+        public IActionResult Delete(int id)
+        {
+            var order = orderRepository.Get(id);
+            if (order == null) return NotFound();
+            return View(order);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleName.Cashier)]
+        public IActionResult Delete(Order order)
+        {
+            var dbOrder = orderRepository.Get(order);
+            orderRepository.RemoveOrder(dbOrder);
+            return RedirectToAction(nameof(OrderController.AllFor), "Order", new { clientId = dbOrder.ClientId});
+        }
     }
 }
