@@ -41,11 +41,11 @@
                 <div class="col"><p class="text-right" id="refund">€0,0</p></div>
             </div>
             <form asp-controller="Client" asp-action="Pay" method="post">
-                <button type="submit" class="btn btn-block btn-success"><i class="fas fa-check"></i> @Localizer["Betaald"]!</button>
+                <button id="payButton" type="submit" class="btn btn-block btn-success" disabled><i class="fas fa-check"></i> @Localizer["Betaald"]!</button>
             </form>
         </div>
-
     </div>
+    <p class="text-center">@Localizer["Geld in kassa: "] €@Model.TotalMoneyInCashDesk</p>
 </div>
 
 @section Scripts {

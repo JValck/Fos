@@ -19,18 +19,15 @@ namespace Fos.Controllers
         private readonly IClientRepository clientRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IStatusRepository statusRepository;
+        private readonly IDishOrderRepository dishOrderRepository;
 
-        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository, IOrderRepository orderRepository, IStatusRepository statusRepository)
+        public ClientController(IDinnerTableRepository dinnerTableRepository, IClientRepository clientRepository, IOrderRepository orderRepository, IStatusRepository statusRepository, IDishOrderRepository dishOrderRepository)
         {
             this.dinnerTableRepository = dinnerTableRepository;
             this.clientRepository = clientRepository;
             this.orderRepository = orderRepository;
             this.statusRepository = statusRepository;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            this.dishOrderRepository = dishOrderRepository;
         }
 
         public IActionResult Create()
@@ -53,7 +50,7 @@ namespace Fos.Controllers
 
         public IActionResult Search()
         {
-            return View(clientRepository.GetAll().OrderBy(c => c.Name).ToList());
+            return View(clientRepository.GetAllThatRequirePayment().OrderBy(c => c.Name).ToList());
         }
 
         [Authorize(Roles = RoleName.Cashier)]
@@ -80,6 +77,7 @@ namespace Fos.Controllers
             var model = new PayViewModel
             {
                 Orders = orderRepository.GetOrdersForClient(client).Where(o => o.Status != statusRepository.GetPayedStatus()).ToList(),
+                TotalMoneyInCashDesk = orderRepository.GetTotalReceivedMoney(),
             };
             return View(model);
         }
@@ -90,8 +88,13 @@ namespace Fos.Controllers
         {
             var client = clientRepository.Get(id);
             if (client == null) return NotFound();
-            orderRepository.MarkAllOrdersAsPayedForClient(client);
+            orderRepository.MarkAllOrdersAsPayedForClient(client);            
             return RedirectToAction(nameof(ClientController.Search), "Client");
+        }
+
+        public IActionResult All()
+        {
+            return View("Search", clientRepository.GetAll().OrderBy(c => c.Name).ToList());
         }
     }
 }

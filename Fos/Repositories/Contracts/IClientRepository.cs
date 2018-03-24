@@ -21,5 +21,11 @@ namespace Fos.Repositories.Contracts
         bool Exists(int clientId);
         Client Get(int id);
         bool Delete(Client client);
+        /// <summary>
+        /// Retrieves a list of all the customers that have unpaied
+        /// orders
+        /// </summary>
+        /// <returns></returns>
+        IList<Client> GetAllThatRequirePayment();
     }
 }

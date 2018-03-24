@@ -15,6 +15,11 @@ namespace Fos.Repositories.Contracts
         Order Get(int id);
         IList<Order> GetOrdersForClient(Client client);
         Order Get(Order order);
-        bool MarkAllOrdersAsPayedForClient(Client client);        
+        bool MarkAllOrdersAsPayedForClient(Client client);
+        /// <summary>
+        /// Calculates the total amount of money earned by the system
+        /// </summary>
+        /// <returns>The total money</returns>
+        double GetTotalReceivedMoney();
     }
 }

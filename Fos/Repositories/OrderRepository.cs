@@ -77,6 +77,26 @@ namespace Fos.Repositories
                     .ToList();
         }
 
+        public double GetTotalReceivedMoney()
+        {
+            var payedOrders = dbContext.Orders
+                .Include(o => o.DishOrders).ThenInclude(dishOrders => dishOrders.Order)
+                .Include(o => o.DishOrders).ThenInclude(dishOrders => dishOrders.Dish)
+                .Where(o => o.StatusId == statusRepository.GetPayedStatus().Id)
+                .ToList();
+            double result = 0;
+            foreach(var order in payedOrders)
+            {
+                foreach (var dishOrder in order.DishOrders)
+                {
+                    var unitPrice = dishOrder.Dish.Price;
+                    var amount = dishOrder.Amount;
+                    result += (unitPrice * amount);
+                }
+            }
+            return result;
+        }
+
         public bool MarkAllOrdersAsPayedForClient(Client client)
         {
             var saved = false;

@@ -28,7 +28,7 @@ namespace Fos.Controllers
                 }
                 else if (await _userManager.IsInRoleAsync(user, RoleName.Waiter))
                 {
-                    return RedirectToAction(nameof(ClientController.Index), "Client");
+                    return RedirectToAction(nameof(ClientController.Search), "Client");
                 }else if(await _userManager.IsInRoleAsync(user, RoleName.Cashier))
                 {
                     return RedirectToAction(nameof(CashierController.Index), "Cashier");

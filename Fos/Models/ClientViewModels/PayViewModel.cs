@@ -8,6 +8,7 @@ namespace Fos.Models.ClientViewModels
     public class PayViewModel
     {
         public IList<Order> Orders { get; set; }
+        public double TotalMoneyInCashDesk { get; internal set; }
 
         public double GetTotalPrice()
         {

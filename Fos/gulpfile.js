@@ -42,7 +42,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('js', function () {
-    convertJs('app.js');
+    convertSpecialJs('app.js');
     convertJs('createOrder.js');
     convertJs('pay.js');
 });
@@ -55,7 +55,11 @@ function convertJs(jsFileName) {
         .pipe(buffer())
         .pipe(uglify())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest(paths.webroot + "js"));
+        .pipe(gulp.dest(paths.webroot + "js"));    
+}
+
+function convertSpecialJs(jsFileName) {
+    convertJs(jsFileName);
 
     browserify({ entries: paths.jsAssets + jsFileName, debug: true })
         .transform("babelify", { presets: ["es2015"] })

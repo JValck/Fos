@@ -12,10 +12,12 @@ namespace Fos.Repositories
     public class ClientRepository : IClientRepository
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly IStatusRepository statusRepository;
 
-        public ClientRepository(ApplicationDbContext dbContext)
+        public ClientRepository(ApplicationDbContext dbContext, IStatusRepository statusRepository)
         {
             this.dbContext = dbContext;
+            this.statusRepository = statusRepository;
         }
 
         public Client Create(string name, DinnerTable table)
@@ -53,6 +55,15 @@ namespace Fos.Repositories
         {
             return dbContext.Clients
                 .Include(c => c.DinnerTableClients).ThenInclude(dtc => dtc.DinnerTable)
+                .ToList();
+        }
+
+        public IList<Client> GetAllThatRequirePayment()
+        {
+            return dbContext.Clients
+                .Include(c => c.Orders)
+                .Include(c => c.DinnerTableClients).ThenInclude(dtc => dtc.DinnerTable)
+                .Where(c => c.Orders.Where(o => o.Status != statusRepository.GetPayedStatus()).Count() > 0)
                 .ToList();
         }
 
