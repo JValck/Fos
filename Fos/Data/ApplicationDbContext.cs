@@ -17,6 +17,7 @@ namespace Fos.Data
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Kitchen> Kitchens { get; set; }
         public DbSet<DishOrder> DishOrders { get; set; }
+        public DbSet<DinnerTableClient> DinnerTableClients { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
