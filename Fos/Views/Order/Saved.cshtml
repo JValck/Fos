@@ -1,4 +1,4 @@
-﻿
+﻿@model int
 @{
     ViewData["Title"] = Localizer["Bestelling opgeslagen"];
 }
@@ -8,7 +8,9 @@
         <div class="d-block">
             <h1 class="text-center text-success text-uppercase"><i class="fas fa-check"></i> @ViewData["Title"]</h1>
             <div class="d-flex justify-content-center">
-                <a asp-controller="Redirect" asp-action="Index" class="btn btn-outline-primary text-center"><i class="fas fa-home"></i> @Localizer["Naar het startscherm"]</a>
+                <a asp-controller="Redirect" asp-action="Index" class="btn btn-outline-primary text-center"><i class="fas fa-home"></i> @Localizer["Naar het startscherm"]</a><br/>
+                <a asp-controller="Client" asp-action="Search" class="btn btn-outline-secondary text-center"><i class="fas fa-table"></i> @Localizer["Klanten overzicht"]</a><br />
+                <a asp-controller="Order" asp-action="Create" asp-route-clientid="@Model" class="btn btn-outline-secondary text-center"><i class="fas fa-utensils"></i> @Localizer["Nieuwe bestelling voor deze klant"]</a>
             </div>
         </div>
     </div>

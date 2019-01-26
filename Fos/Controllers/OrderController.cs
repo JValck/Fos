@@ -58,7 +58,7 @@ namespace Fos.Controllers
                 return View(model);
             }
             var saved = orderRepository.CreateOrder(ExtractDishesWithAmountFromSubmittedData(data), clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
-            return (saved) ? Saved():NotSaved();
+            return (saved) ? Saved(model.ClientId):NotSaved();
         }
 
         private void ReloadViewData(ref FormViewModel model, ref Dictionary<string, string> data, Guid tableId)
@@ -93,9 +93,9 @@ namespace Fos.Controllers
             model.DishOrders = dishesRepository.GetAll().ToDictionary(d => d.Id, d => 0);
         }
 
-        private IActionResult Saved()
+        private IActionResult Saved(int clientId)
         {
-            return View("Saved");
+            return View("Saved", clientId);
         }
 
         private IActionResult NotSaved()
@@ -145,7 +145,7 @@ namespace Fos.Controllers
             }
             var table = dinnerTableRepository.Get(viewModel.TableId);
             var saved = orderRepository.UpdateOrder(order, ExtractDishesWithAmountFromSubmittedData(data), table, userHelper.GetUser());
-            return (saved) ? Saved() : NotSaved();
+            return (saved) ? Saved(viewModel.ClientId) : NotSaved();
         }
 
         private IDictionary<int,int> ExtractDishesWithAmountFromSubmittedData(IDictionary<string, string> data)
