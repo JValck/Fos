@@ -35,19 +35,12 @@ namespace Fos.Repositories
 
         public bool UpdateTable(Client client, DinnerTable newTable)
         {
-            var dinnerTableClient = dbContext.DinnerTableClients.Where(dtc => dtc.ClientId == client.Id && dtc.DinnerTableId == newTable.Id).FirstOrDefault();
-            if(dinnerTableClient != null)
+            client.DinnerTableClients.ToList().ForEach(dtc => dtc.IsCurrent = false);
+            client.DinnerTableClients.Add(new DinnerTableClient
             {
-                dinnerTableClient.IsCurrent = true;
-            }
-            else
-            {
-                client.DinnerTableClients.Add(new DinnerTableClient
-                {
-                    Client = client,
-                    DinnerTable = newTable
-                });
-            }
+                Client = client,
+                DinnerTable = newTable
+            });
             return dbContext.SaveChanges() > 0;
         }
 

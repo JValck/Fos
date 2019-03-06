@@ -34,7 +34,8 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        @String.Join("->", item.DinnerTableClients.Select(dtc => dtc.DinnerTable.TableNumber).OrderBy(number => number).ToList())
+                        @item.DinnerTableClients.FirstOrDefault(dtc => dtc.IsCurrent).DinnerTable.TableNumber<br/>
+                        (@String.Join("->", item.DinnerTableClients.OrderBy(dtc => dtc.CreatedOn).Select(dtc => dtc.DinnerTable.TableNumber).ToList()))
                     </td>
                     <td onclick="window.location.href = ($($(this).children(':first')).prop('href'));" class="text-center" style="background-color:#4CD4B0; cursor: pointer;">
                         <a asp-controller="Order" asp-action="Create" asp-route-id="@item.Id" class="text-light">@Localizer["Nieuwe bestelling"]</a>
