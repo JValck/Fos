@@ -21,5 +21,8 @@ namespace Fos.Models.OrderViewModels
         public Dictionary<int, int> DishOrders { get; set; }
 
         public bool IsUpdate { get; set; }
+
+        [Display(Name ="Dit tafelnummer instellen als nieuw standaard tafelnummer voor de klant")]
+        public bool IsNewDefaultTable { get; set; }
     }
 }

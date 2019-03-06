@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Fos.Data;
 using Fos.Helpers;
 using Fos.Models;
 using Fos.Models.OrderViewModels;
@@ -57,8 +58,14 @@ namespace Fos.Controllers
                 ReloadViewData(ref model, ref data, Guid.Empty);
                 return View(model);
             }
-            var saved = orderRepository.CreateOrder(ExtractDishesWithAmountFromSubmittedData(data), clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
-            return (saved) ? Saved(model.ClientId):NotSaved();
+            var savedOrder = false;
+            var savedTableChange = !model.IsNewDefaultTable;
+            savedOrder = orderRepository.CreateOrder(ExtractDishesWithAmountFromSubmittedData(data), clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId), userHelper.GetUser());
+            if (model.IsNewDefaultTable)
+            {
+                savedTableChange = clientRepository.UpdateTable(clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId));
+            }
+            return (savedOrder && savedTableChange) ? Saved(model.ClientId) : NotSaved();
         }
 
         private void ReloadViewData(ref FormViewModel model, ref Dictionary<string, string> data, Guid tableId)
@@ -70,9 +77,9 @@ namespace Fos.Controllers
         private void MergeDishOrders(ref FormViewModel model, ref Dictionary<string, string> data)
         {
             int dishId;
-            foreach(var item in data)
+            foreach (var item in data)
             {
-                if(int.TryParse(item.Key, out dishId))
+                if (int.TryParse(item.Key, out dishId))
                 {
                     model.DishOrders[dishId] = int.Parse(item.Value);
                 }
@@ -127,33 +134,38 @@ namespace Fos.Controllers
             FormViewModel viewModel = new UpdateViewModel();
             viewModel.ClientId = order.ClientId;
             var mapped = dishOrderRepository.MapDishAndAmountFor(order).ToDictionary(m => m.Key.ToString(), m => m.Value.ToString());
-            ReloadViewData(ref viewModel, ref mapped, order.DinnerTableId);            
+            ReloadViewData(ref viewModel, ref mapped, order.DinnerTableId);
             return View("Create", viewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, FormViewModel viewModel)
+        public IActionResult Edit(int id, FormViewModel model)
         {
             var order = orderRepository.Get(id);
             if (order == null) return NotFound();
-            viewModel.ClientId = order.ClientId;
+            model.ClientId = order.ClientId;
             Dictionary<string, string> data = Request.Form.ToDictionary(d => d.Key, d => d.Value.ToString());
             if (!ModelState.IsValid)
             {
-                ReloadViewData(ref viewModel, ref data, viewModel.TableId);
-                return View("Create", viewModel);
+                ReloadViewData(ref model, ref data, model.TableId);
+                return View("Create", model);
             }
-            var table = dinnerTableRepository.Get(viewModel.TableId);
+            var table = dinnerTableRepository.Get(model.TableId);
             var saved = orderRepository.UpdateOrder(order, ExtractDishesWithAmountFromSubmittedData(data), table, userHelper.GetUser());
-            return (saved) ? Saved(viewModel.ClientId) : NotSaved();
+            var savedTableChange = !model.IsNewDefaultTable;
+            if (model.IsNewDefaultTable)
+            {
+                savedTableChange = clientRepository.UpdateTable(clientRepository.Get(model.ClientId), dinnerTableRepository.Get(model.TableId));
+            }
+            return (saved) ? Saved(model.ClientId) : NotSaved();
         }
 
-        private IDictionary<int,int> ExtractDishesWithAmountFromSubmittedData(IDictionary<string, string> data)
+        private IDictionary<int, int> ExtractDishesWithAmountFromSubmittedData(IDictionary<string, string> data)
         {
             int parsed = 0;
             return data.Where(d => int.TryParse(d.Key, out parsed)).ToDictionary(d => parsed, d => int.Parse(d.Value));
         }
-        
+
         public IActionResult Delete(int id)
         {
             var order = orderRepository.Get(id);
@@ -167,7 +179,7 @@ namespace Fos.Controllers
         {
             var dbOrder = orderRepository.Get(order);
             orderRepository.RemoveOrder(dbOrder);
-            return RedirectToAction(nameof(OrderController.AllFor), "Order", new { clientId = dbOrder.ClientId});
+            return RedirectToAction(nameof(OrderController.AllFor), "Order", new { clientId = dbOrder.ClientId });
         }
     }
 }
