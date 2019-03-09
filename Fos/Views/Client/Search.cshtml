@@ -32,6 +32,7 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
+                        <a data-toggle="modal" data-target="#editNameModal" class="editClientButton" data-id="@item.Id" data-client-name="@item.Name"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                     <td>
                         @item.DinnerTableClients.FirstOrDefault(dtc => dtc.IsCurrent).DinnerTable.TableNumber<br/>
@@ -60,3 +61,38 @@
         <a asp-action="All" class="btn btn-outline-secondary"><i class="fas fa-bars"></i></a>
     </p>
 </div>
+
+<!-- change client name modal -->
+<div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Naam wijzigen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Client" asp-action="UpdateName">
+                <div class="modal-body">
+                    <p>Geef de nieuwe naam van de klant in:</p>
+                    <input type="text" name="newClientName" id="destinationClientName" class="form-control"/>
+                    <input type="number" value="" id="destinationClientId" name="clientId" hidden/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+                    <button type="submit" class="btn btn-primary">Opslaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var clientButtons = document.getElementsByClassName("editClientButton");
+    for (var i = 0; i < clientButtons.length; i++) {
+        clientButtons[i].addEventListener('click', function () {
+            document.getElementById('destinationClientId').value = this.getAttribute('data-id');
+            document.getElementById('destinationClientName').value = this.getAttribute('data-client-name');
+        });
+    }
+</script>
+<!-- end change client name modal -->

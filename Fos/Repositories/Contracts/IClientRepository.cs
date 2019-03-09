@@ -34,5 +34,13 @@ namespace Fos.Repositories.Contracts
         /// </summary>
         /// <returns></returns>
         IList<Client> GetAllThatRequirePayment();
+
+        /// <summary>
+        /// Rename a client
+        /// </summary>
+        /// <param name="id">The id of the client to rename</param>
+        /// <param name="newName">The new name of the client</param>
+        /// <returns>The updated client</returns>
+        Client Rename(int id, string newName);
     }
 }

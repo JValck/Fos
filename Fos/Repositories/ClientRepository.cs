@@ -82,5 +82,13 @@ namespace Fos.Repositories
         {
             return dbContext.Clients.Where(c => c.Name.Contains(nameContains)).FirstOrDefault();
         }
+
+        public Client Rename(int id, string newName)
+        {
+            var client = Get(id);
+            client.Name = newName;
+            dbContext.SaveChanges();
+            return client;
+        }
     }
 }
