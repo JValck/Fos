@@ -92,6 +92,15 @@ namespace Fos.Controllers
             return RedirectToAction(nameof(ClientController.Search), "Client");
         }
 
+        [HttpPost]
+        public IActionResult UpdateName(int clientId, string newClientName)
+        {
+            var client = clientRepository.Get(clientId);
+            if (client == null) return NotFound();
+            clientRepository.Rename(clientId, newClientName);
+            return RedirectToAction(nameof(ClientController.Search), "Client");
+        }
+
         public IActionResult All()
         {
             return View("Search", clientRepository.GetAll().OrderBy(c => c.Name).ToList());
