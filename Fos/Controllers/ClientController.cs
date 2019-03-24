@@ -88,8 +88,8 @@ namespace Fos.Controllers
         {
             var client = clientRepository.Get(id);
             if (client == null) return NotFound();
-            orderRepository.MarkAllOrdersAsPayedForClient(client);            
-            return RedirectToAction(nameof(ClientController.Search), "Client");
+            var payed = orderRepository.MarkAllOrdersAsPayedForClient(client);
+            return Json(payed);
         }
 
         [HttpPost]

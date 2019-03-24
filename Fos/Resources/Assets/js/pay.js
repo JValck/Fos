@@ -19,3 +19,18 @@ function calculateNewRefund(receivedMoney) {
         $('#refund').text('€0,0');
     }
 }
+
+function requestPayement(form) {    
+    $.ajax({
+        url: form.attr('action'),
+        method: 'post',
+        success: function (data) {
+            $('#toOverviewLink').show();
+            $('#payButton').hide();
+        },
+        error: function (data) {
+            $('#errorMessage').text("Error: " + data.responseText);
+        }
+    });
+    return false;
+}

@@ -42,30 +42,41 @@ gulp.task('css', function () {
 }, (done) => done());
 
 gulp.task('js', function () {
-    convertSpecialJs('app.js');
-    convertJs('createOrder.js');
-    return convertJs('pay.js');
+    convertSpecialJs('app.js', false);
+    convertJs('createOrder.js', false);
+    return convertJs('pay.js', false);
 }, (done) => done());
 
-function convertJs(jsFileName) {
+gulp.task('jsdev', function () {
+    convertSpecialJs('app.js', true);
+    convertJs('createOrder.js', true);
+    return convertJs('pay.js', true);
+}, (done) => done());
+
+function convertJs(jsFileName, dev) {  
+    if (dev) {
+        return gulp.src(paths.jsAssets + jsFileName)
+            .pipe(gulp.dest(paths.webroot + "js"));
+    } else {
+        return browserify({ entries: paths.jsAssets + jsFileName, debug: true })
+            .transform("babelify", { presets: ["@babel/preset-env"] })
+            .bundle()
+            .pipe(source(jsFileName))
+            .pipe(buffer())
+            .pipe(uglify())
+            .pipe(rename({ suffix: '.min' }))
+            .pipe(gulp.dest(paths.webroot + "js"));
+    }
+}
+
+function convertSpecialJs(jsFileName, dev) {
+    convertJs(jsFileName, dev);
+
     return browserify({ entries: paths.jsAssets + jsFileName, debug: true })
         .transform("babelify", { presets: ["@babel/preset-env"] })
         .bundle()
         .pipe(source(jsFileName))
-        .pipe(buffer())
-        .pipe(uglify())
-        .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(paths.webroot + "js"));    
 }
 
-function convertSpecialJs(jsFileName) {
-    convertJs(jsFileName);
-
-    return browserify({ entries: paths.jsAssets + jsFileName, debug: true })
-        .transform("babelify", { presets: ["@babel/preset-env"] })
-        .bundle()
-        .pipe(source(jsFileName))
-        .pipe(gulp.dest(paths.webroot + "js"));
-}
-
-gulp.task('default', gulp.parallel('css', 'sass', 'js'), (done) => done());
+gulp.task('default', gulp.parallel('css', 'sass', 'jsdev', 'js'), (done) => done());
