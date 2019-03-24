@@ -27,29 +27,29 @@ var paths = {
     "jsAssets":"Resources/Assets/js/"
 }
 
-gulp.task('default', ['sass', 'js']);
-
 gulp.task('sass', function () {
-    gulp.src(paths.cssAssets + "app.scss")
+    return gulp.src(paths.cssAssets + "app.scss")
         .pipe(sass())
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(paths.webroot + "css"));
+}, (done) => done());
 
-    gulp.src(paths.cssAssets + "app.scss")
+gulp.task('css', function () {
+    return gulp.src(paths.cssAssets + "app.scss")
         .pipe(sass())
         .pipe(gulp.dest(paths.webroot + "css"));
-});
+}, (done) => done());
 
 gulp.task('js', function () {
     convertSpecialJs('app.js');
     convertJs('createOrder.js');
-    convertJs('pay.js');
-});
+    return convertJs('pay.js');
+}, (done) => done());
 
 function convertJs(jsFileName) {
-    browserify({ entries: paths.jsAssets + jsFileName, debug: true })
-        .transform("babelify", { presets: ["es2015"] })
+    return browserify({ entries: paths.jsAssets + jsFileName, debug: true })
+        .transform("babelify", { presets: ["@babel/preset-env"] })
         .bundle()
         .pipe(source(jsFileName))
         .pipe(buffer())
@@ -61,9 +61,11 @@ function convertJs(jsFileName) {
 function convertSpecialJs(jsFileName) {
     convertJs(jsFileName);
 
-    browserify({ entries: paths.jsAssets + jsFileName, debug: true })
-        .transform("babelify", { presets: ["es2015"] })
+    return browserify({ entries: paths.jsAssets + jsFileName, debug: true })
+        .transform("babelify", { presets: ["@babel/preset-env"] })
         .bundle()
         .pipe(source(jsFileName))
         .pipe(gulp.dest(paths.webroot + "js"));
 }
+
+gulp.task('default', gulp.parallel('css', 'sass', 'js'), (done) => done());

@@ -19,3 +19,7 @@ function calculateNewRefund(receivedMoney) {
         $('#refund').text('€0,0');
     }
 }
+
+function requestPayement() {
+
+}
