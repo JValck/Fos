@@ -79,4 +79,4 @@ function convertSpecialJs(jsFileName, dev) {
         .pipe(gulp.dest(paths.webroot + "js"));    
 }
 
-gulp.task('default', gulp.parallel('css', 'sass', 'jsdev', 'js'), (done) => done());
+gulp.task('default', gulp.series('css', 'sass', 'jsdev', 'js'), (done) => done());
