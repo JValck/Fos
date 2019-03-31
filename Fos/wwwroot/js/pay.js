@@ -2,6 +2,9 @@ $(document).ready(function () {
     $('#receivedFromClient').keyup(function () {
         calculateNewRefund($(this).val());
     });
+    $('#payForm').on('submit', function () {
+        requestPayement($(this));
+    });
 });
 
 function calculateNewRefund(receivedMoney) {
